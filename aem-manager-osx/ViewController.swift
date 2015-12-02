@@ -64,7 +64,6 @@ class ViewController: NSViewController {
             }
         }
         
-        
     }
     
     @IBAction func newInstance(sender: NSMenuItem) {
@@ -95,6 +94,7 @@ class ViewController: NSViewController {
         }
         
     }
+    
     @IBAction func stopInstance(sender: NSMenuItem) {
         
         if table.selectedRow < 0 {
@@ -102,27 +102,70 @@ class ViewController: NSViewController {
         }else{
             print("Stop Instance")
         }
-        
-        
-        
     }
+    
     @IBAction func openAuthor(sender: NSMenuItem) {
         if table.selectedRow < 0 {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Open Author/Publish")
+            if let url = NSURL(string: AEMInstance.getUrlWithContextPath(selectedInstance!)){
+                NSWorkspace.sharedWorkspace().openURL(url)
+            }
         }
-        
-        
     }
+    
+    @IBAction func openCRX(sender: NSMenuItem) {
+        
+        if table.selectedRow < 0 {
+            performSegueWithIdentifier("noInstance",sender: self)
+        }else{
+            print("Open CRX")
+            var url = AEMInstance.getUrlWithContextPath(selectedInstance!)
+            url.appendContentsOf("/crx/explorer/")
+            if(selectedInstance?.type != AEMInstance.defaultType){
+                url = AEMInstance.getUrl(selectedInstance!)
+                url.appendContentsOf("/crx/")
+            }
+            if let openUrl = NSURL(string:url){
+                 NSWorkspace.sharedWorkspace().openURL(openUrl)
+            }
+        }
+    }
+    
+    @IBAction func openCRXContentExplorer(sender: NSMenuItem) {
+        
+        if table.selectedRow < 0 {
+            performSegueWithIdentifier("noInstance",sender: self)
+        }else{
+            print("Open CRX Content Explorer")
+            var url = AEMInstance.getUrlWithContextPath(selectedInstance!)
+            url.appendContentsOf("/crx/explorer/browser/")
+            if(selectedInstance?.type != AEMInstance.defaultType){
+                url = AEMInstance.getUrl(selectedInstance!)
+                url.appendContentsOf("/crx/browser/index.jsp")
+            }
+            if let openUrl = NSURL(string:url){
+                NSWorkspace.sharedWorkspace().openURL(openUrl)
+            }
+            
+        }
+    }
+    
     @IBAction func openCRXDE(sender: NSMenuItem) {
         if table.selectedRow < 0 {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
-            print("Open CRX DE")
+            var url = AEMInstance.getUrlWithContextPath(selectedInstance!)
+            url.appendContentsOf("/crx/de/")
+            if selectedInstance?.type != AEMInstance.defaultType {
+                url = AEMInstance.getUrl(selectedInstance!)
+                url.appendContentsOf("/crxde")
+            }
+            if let openUrl = NSURL(string: url){
+                NSWorkspace.sharedWorkspace().openURL(openUrl)
+            }
         }
-        
-        
     }
     
     @IBAction func openFelixConsole(sender: NSMenuItem) {
@@ -130,17 +173,17 @@ class ViewController: NSViewController {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Open Felix Console")
+            var url = AEMInstance.getUrlWithContextPath(selectedInstance!)
+            url.appendContentsOf("/system/console")
+            if let openUrl = NSURL(string: url){
+                NSWorkspace.sharedWorkspace().openURL(openUrl)
+            }
         }
-        
-        
     }
     
     func reloadTableData(notification: NSNotification){
         table.reloadData()
     }
-
-    
-    
     
 }
 

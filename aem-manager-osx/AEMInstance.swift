@@ -28,7 +28,7 @@ class AEMInstance: NSObject, NSCoding {
     var status: String = ""
     var hostName = "localhost"
     var port =  defaultPort
-    var contextPath = "/"
+    var contextPath = ""
     var javaExecutable = "/usr/bin/java"
     var userName = "admin"
     var password = "admin"
@@ -86,6 +86,15 @@ class AEMInstance: NSObject, NSCoding {
     
     static func getUrl(instance: AEMInstance) -> String{
         return "http://\(instance.hostName):\(instance.port)"
+    }
+    
+    static func getUrlWithContextPath(instance: AEMInstance) -> String{
+        var url =  getUrl(instance)
+        if !instance.contextPath.isEmpty{
+            url.appendContentsOf(instance.contextPath)
+        }
+        
+        return url
     }
     
     // MARK: NSCoding
@@ -156,7 +165,7 @@ class AEMInstance: NSObject, NSCoding {
     private static func getPath() -> String? {
         let pfd = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
         if let path = pfd.first {
-            return path + "/aeminstances.bin"
+            return path + "/.aeminstances.bin"
         }else {
             return nil
         }

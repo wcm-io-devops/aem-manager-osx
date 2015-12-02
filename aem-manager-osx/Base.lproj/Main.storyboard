@@ -67,12 +67,33 @@
                                         <menuItem isSeparatorItem="YES" id="3G4-uC-yXn"/>
                                         <menuItem title="Open Author/Publish" id="Xo1-GD-Bcg">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openAuthor:" target="Ady-hI-5gd" id="IF4-ma-aju"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Open CRX" id="OBE-Ib-uw7">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openCRX:" target="Ady-hI-5gd" id="jrP-pW-Rnv"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Open CRX Content Explorer" id="OpM-mG-731">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openCRXContentExplorer:" target="Ady-hI-5gd" id="Bia-pW-AcW"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Open CRXDE Lite" id="8be-N1-6zO">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openCRXDE:" target="Ady-hI-5gd" id="izL-dt-Dp4"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Open Felix Console" id="Pgh-US-dJu">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openFelixConsole:" target="Ady-hI-5gd" id="QeT-hY-LkP"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="Hd9-3t-0dC"/>
                                         <menuItem title="Show Error Log" id="jwL-iF-9Bf">
@@ -120,7 +141,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="150.5" y="285"/>
+            <point key="canvasLocation" x="-228.5" y="232"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="32b-PG-xNB">
@@ -790,7 +811,7 @@ Gw
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="403.5" y="951.5"/>
+            <point key="canvasLocation" x="370.5" y="502.5"/>
         </scene>
     </scenes>
     <resources>
