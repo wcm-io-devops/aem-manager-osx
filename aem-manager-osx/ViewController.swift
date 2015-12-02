@@ -14,24 +14,27 @@ class ViewController: NSViewController {
     @IBOutlet weak var table: NSTableView!
     
     
-    var instances = AEMInstance.loadAEMInstances()
-    
+    var  instances = AEMInstance.loadAEMInstances()
     var selectedInstance: AEMInstance?
     
     var guiarray:[NSWindowController] = []
     
+    override func viewDidAppear() {
+        for a in instances {
+            print(a.id)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         table.setDataSource(self)
         table.setDelegate(self)
         
-        // Rückverweis in AppDelegate-Objekt
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTableData:", name: "reload", object: nil)
+
         let app = NSApplication.sharedApplication().delegate as! AppDelegate
         app.mainVC = self
-        
-        
-        // Do any additional setup after loading the view.
+
     }
     
     override var representedObject: AnyObject? {
@@ -43,16 +46,18 @@ class ViewController: NSViewController {
     @IBAction func editInstance(sender: NSMenuItem) {
         
     
-        if table.selectedRow <= 0 {
+        if table.selectedRow < 0 {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             
             // open preferences dialog with instance
-            print("Edit Instance")
             if let winCrtl = storyboard!.instantiateControllerWithIdentifier("aemInstanceGUI") as? NSWindowController {
                 if let aemInstanceGui = winCrtl.contentViewController as? AemInstanceController{
                     // add data
+                    print("Selected Instance in table with id \(selectedInstance?.id) and name \(selectedInstance?.name)")
                     aemInstanceGui.aeminstance = selectedInstance
+                    aemInstanceGui.instances = instances
+                    print("Edit Instance with name : \(aemInstanceGui.aeminstance!.name) and id: \(aemInstanceGui.aeminstance!.id)")
                 }
                 winCrtl.showWindow(self)
                 guiarray.append(winCrtl)
@@ -65,12 +70,14 @@ class ViewController: NSViewController {
     @IBAction func newInstance(sender: NSMenuItem) {
         
         // open new preferences dialog
-        print("New Instance")
         if let winCrtl = storyboard!.instantiateControllerWithIdentifier("aemInstanceGUI") as? NSWindowController {
             
             if let aemInstanceGui = winCrtl.contentViewController as? AemInstanceController{
                 // add data
                 aemInstanceGui.aeminstance = AEMInstance()
+                aemInstanceGui.instances = instances
+ 
+                print("New Instance with id \(aemInstanceGui.aeminstance!.id)")
             }
             winCrtl.showWindow(self)
             guiarray.append(winCrtl)
@@ -81,7 +88,7 @@ class ViewController: NSViewController {
     @IBAction func startInstance(sender: NSMenuItem) {
         
         
-        if table.selectedRow <= 0 {
+        if table.selectedRow < 0 {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Start Instance")
@@ -90,7 +97,7 @@ class ViewController: NSViewController {
     }
     @IBAction func stopInstance(sender: NSMenuItem) {
         
-        if table.selectedRow <= 0 {
+        if table.selectedRow < 0 {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Stop Instance")
@@ -100,7 +107,7 @@ class ViewController: NSViewController {
         
     }
     @IBAction func openAuthor(sender: NSMenuItem) {
-        if table.selectedRow <= 0 {
+        if table.selectedRow < 0 {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Open Author/Publish")
@@ -109,7 +116,7 @@ class ViewController: NSViewController {
         
     }
     @IBAction func openCRXDE(sender: NSMenuItem) {
-        if table.selectedRow <= 0 {
+        if table.selectedRow < 0 {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Open CRX DE")
@@ -119,7 +126,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func openFelixConsole(sender: NSMenuItem) {
-        if table.selectedRow <= 0 {
+        if table.selectedRow < 0 {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Open Felix Console")
@@ -128,11 +135,19 @@ class ViewController: NSViewController {
         
     }
     
+    func reloadTableData(notification: NSNotification){
+        table.reloadData()
+    }
+
+    
     
     
 }
 
+
 extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
+    
+
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return instances.count
     }
@@ -144,7 +159,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
             case "path": return instances[row].path
             case "type": return instances[row].type
             case "status": return instances[row].status
-            case "url": return instances[row].url
+            case "url": return AEMInstance.getUrl(instances[row])
             default: break
             }
             
@@ -153,7 +168,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
     }
     func tableViewSelectionDidChange(notification: NSNotification) {
         if table.selectedRow >= 0 {
-            print(instances[table.selectedRow].name)
+            print("Selected instance in table with name : \(instances[table.selectedRow].name) and id: \(instances[table.selectedRow].id)")
             // set seletected instance
             selectedInstance = instances[table.selectedRow]
             

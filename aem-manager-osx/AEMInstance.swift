@@ -19,16 +19,15 @@ class AEMInstance: NSObject, NSCoding {
     static let defaultJConsolePort = 9999
     static let defaultType = "AEM 5.5, 6.0 or higher"
     
-    
+    let id = NSUUID().UUIDString
     var name: String = ""
     var path: String = ""
-    // ?
-    var url: String = ""
+
     var type: String = defaultType
     // ?
     var status: String = ""
     var hostName = "localhost"
-    var port: Int = defaultPort
+    var port =  defaultPort
     var contextPath = "/"
     var javaExecutable = "/usr/bin/java"
     var userName = "admin"
@@ -47,7 +46,7 @@ class AEMInstance: NSObject, NSCoding {
     var customJVMArgsActive = false
     var customJVMArgs = ""
     
-    static func save(instance: AEMInstance) -> Bool {
+    static func save(instance: [AEMInstance]) -> Bool {
         if let path = getPath(){
             NSKeyedArchiver.archiveRootObject(instance, toFile: path)
             return true
@@ -56,29 +55,13 @@ class AEMInstance: NSObject, NSCoding {
     }
     
     static func loadAEMInstances() -> [AEMInstance]{
-        var inst = [AEMInstance]()
+        
         if let path = getPath(){
             if let instances = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? [AEMInstance]{
-                inst.appendContentsOf(instances)
+                return instances
             }
         }
-        
-        /*
-        var instances = [AEMInstance]()
-        for var i = 1; i<=3; i++ {
-        let instance = AEMInstance()
-        instance.name = "Test\(i)"
-        instance.path = "/test/test\(i)"
-        instance.url = "localhost"
-        instance.type = "CQ6"
-        instance.status = "Running"
-        instances.append(instance)
-        }
-        
-        
-        return instances
-        */
-        return inst
+        return [AEMInstance]()
         
     }
     
@@ -90,13 +73,29 @@ class AEMInstance: NSObject, NSCoding {
         return true
     }
     
+    override func isEqual(object: AnyObject?) -> Bool {
+        if let c = object as? AEMInstance {
+            return c.id == self.id
+        }
+        return false
+    }
+    
+    override var hash: Int {
+        return id.hashValue
+    }
+    
+    static func getUrl(instance: AEMInstance) -> String{
+        return "http://\(instance.hostName):\(instance.port)"
+    }
+    
     // MARK: NSCoding
     required convenience init(coder decoder: NSCoder) {
         self.init()
+        self.name = decoder.decodeObjectForKey("id") as! String
         self.name = decoder.decodeObjectForKey("name") as! String
         self.type = decoder.decodeObjectForKey("type") as! String
         self.path = decoder.decodeObjectForKey("path") as! String
-        self.url = decoder.decodeObjectForKey("url") as! String
+
         self.status = decoder.decodeObjectForKey("status") as! String
         self.hostName = decoder.decodeObjectForKey("hostName") as! String
         self.contextPath = decoder.decodeObjectForKey("contextPath") as! String
@@ -124,10 +123,10 @@ class AEMInstance: NSObject, NSCoding {
         
     }
     func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.name, forKey: "id")
         coder.encodeObject(self.name, forKey: "name")
         coder.encodeObject(self.type, forKey: "type")
         coder.encodeObject(self.path, forKey: "path")
-        coder.encodeObject(self.url, forKey: "url")
         coder.encodeObject(self.status, forKey: "status")
         coder.encodeObject(self.hostName, forKey: "hostName")
         coder.encodeObject(self.contextPath, forKey: "contextPath")

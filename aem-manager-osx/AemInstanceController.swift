@@ -10,7 +10,7 @@ import Cocoa
 
 class AemInstanceController: NSViewController {
     
-    
+   var instances = [AEMInstance]()
     
     // MARK: properties
     
@@ -47,6 +47,7 @@ class AemInstanceController: NSViewController {
             nameField?.stringValue = aeminstance!.name
             hostnameField?.stringValue = aeminstance!.hostName
             contextPathFiled?.stringValue = aeminstance!.contextPath
+            portField?.stringValue = String(aeminstance!.port)
             typeComboBox?.stringValue = aeminstance!.contextPath
             jarFileField!.stringValue = aeminstance!.path
             javaExecField!.stringValue = aeminstance!.javaExecutable
@@ -70,6 +71,7 @@ class AemInstanceController: NSViewController {
             jProfilerCheckBox.state = aeminstance?.jProfiler == true ? NSOnState : NSOffState
             jConsoleCheckBox.state = aeminstance?.jConsole == true ? NSOnState : NSOffState
             customJvmCheckBox.state = aeminstance?.customJVMArgsActive == true ? NSOnState : NSOffState
+            jvmDebugCheckBox.state = aeminstance?.jVMDebug == true ? NSOnState : NSOffState
             
         }
         
@@ -116,11 +118,10 @@ class AemInstanceController: NSViewController {
     }
     
     @IBAction func save(sender: AnyObject) {
-        print(aeminstance!)
-        
         aeminstance!.name = nameField.stringValue
         aeminstance!.hostName = hostnameField.stringValue
         aeminstance!.contextPath = contextPathFiled.stringValue
+        aeminstance!.port = portField.integerValue
         aeminstance!.type = typeComboBox!.stringValue
         aeminstance!.path = jarFileField!.stringValue
         aeminstance!.javaExecutable = javaExecField!.stringValue
@@ -140,15 +141,29 @@ class AemInstanceController: NSViewController {
         aeminstance!.jVMDebug = jvmDebugCheckBox.state == NSOnState ? true : false
         
         if AEMInstance.validate(aeminstance!){
-            print(aeminstance!.name)
-            AEMInstance.save(aeminstance!)
             
+            if instances.contains(aeminstance!){
+                instances.removeAtIndex(instances.indexOf(aeminstance!)!)
+            }
+
+            instances.append(aeminstance!)
+            
+            print("Saving Instance to db with name:\(aeminstance!.name) and id: \(aeminstance?.id)")
+            AEMInstance.save(instances)
+         
+            
+            /*
             if let winCrtl = storyboard!.instantiateControllerWithIdentifier("mainView") as? NSWindowController {
                 if let aemInstanceGui = winCrtl.contentViewController as? ViewController{
+                    aemInstanceGui.instances = AEMInstance.loadAEMInstances()
+                    print(aemInstanceGui)
                     aemInstanceGui.table.reloadData()
                 }
                 
             }
+*/
+            NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
+
             view.window?.close()
             
         }
@@ -210,7 +225,12 @@ class AemInstanceController: NSViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         
+    }
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        typeComboBox.selectItemAtIndex(0)
     }
     
 }

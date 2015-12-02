@@ -476,7 +476,7 @@ Gw
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0W2-XE-JlE">
                                 <rect key="frame" x="200" y="105" width="243" height="18"/>
                                 <animations/>
-                                <buttonCell key="cell" type="check" title="Enable JVM Debugging" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ehk-PL-u9T">
+                                <buttonCell key="cell" type="check" title="Enable JVM Debugging" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ehk-PL-u9T">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -487,7 +487,7 @@ Gw
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7cv-Jy-Hau">
                                 <rect key="frame" x="200" y="79" width="216" height="18"/>
                                 <animations/>
-                                <buttonCell key="cell" type="check" title="Enable JProfiler instrumentation" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="u9J-cQ-86q">
+                                <buttonCell key="cell" type="check" title="Enable JProfiler instrumentation" bezelStyle="regularSquare" imagePosition="left" inset="2" id="u9J-cQ-86q">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -498,7 +498,7 @@ Gw
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gd-39-SgV">
                                 <rect key="frame" x="200" y="52" width="223" height="18"/>
                                 <animations/>
-                                <buttonCell key="cell" type="check" title="Enable JConsole Support" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="AdO-jc-bE6">
+                                <buttonCell key="cell" type="check" title="Enable JConsole Support" bezelStyle="regularSquare" imagePosition="left" inset="2" id="AdO-jc-bE6">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -563,7 +563,7 @@ Gw
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RHU-FJ-PeW">
                                 <rect key="frame" x="18" y="18" width="229" height="18"/>
                                 <animations/>
-                                <buttonCell key="cell" type="check" title="Custom JVM Settings" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="bZ4-es-wu4">
+                                <buttonCell key="cell" type="check" title="Custom JVM Settings" bezelStyle="regularSquare" imagePosition="left" inset="2" id="bZ4-es-wu4">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -692,7 +692,7 @@ Gw
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="name" width="128" minWidth="40" maxWidth="1000" id="M1y-x1-YCg">
+                                                <tableColumn identifier="name" editable="NO" width="128" minWidth="40" maxWidth="1000" id="M1y-x1-YCg">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Name">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -705,7 +705,7 @@ Gw
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 </tableColumn>
-                                                <tableColumn identifier="type" width="128" minWidth="40" maxWidth="1000" id="Uqj-oO-Lz7">
+                                                <tableColumn identifier="type" editable="NO" width="128" minWidth="40" maxWidth="1000" id="Uqj-oO-Lz7">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Type">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -718,7 +718,7 @@ Gw
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 </tableColumn>
-                                                <tableColumn identifier="url" width="150" minWidth="10" maxWidth="3.4028234663852886e+38" id="SUB-Hv-vTn">
+                                                <tableColumn identifier="url" editable="NO" width="150" minWidth="10" maxWidth="3.4028234663852886e+38" id="SUB-Hv-vTn">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="URL">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -731,7 +731,7 @@ Gw
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 </tableColumn>
-                                                <tableColumn identifier="path" width="128" minWidth="10" maxWidth="3.4028234663852886e+38" id="7kD-sI-NdF">
+                                                <tableColumn identifier="path" editable="NO" width="128" minWidth="10" maxWidth="3.4028234663852886e+38" id="7kD-sI-NdF">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Path">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -744,7 +744,7 @@ Gw
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 </tableColumn>
-                                                <tableColumn identifier="status" width="150" minWidth="10" maxWidth="3.4028234663852886e+38" id="fwD-jM-tf9">
+                                                <tableColumn identifier="status" editable="NO" width="150" minWidth="10" maxWidth="3.4028234663852886e+38" id="fwD-jM-tf9">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Status">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
