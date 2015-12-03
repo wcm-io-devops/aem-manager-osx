@@ -25,7 +25,8 @@ class AEMInstance: NSObject, NSCoding {
 
     var type: String = defaultType
     // ?
-    var status: String = ""
+    var status: BundleStatus = BundleStatus.NotActive
+    
     var hostName = "localhost"
     var port =  defaultPort
     var contextPath = ""
@@ -105,7 +106,6 @@ class AEMInstance: NSObject, NSCoding {
         self.type = decoder.decodeObjectForKey("type") as! String
         self.path = decoder.decodeObjectForKey("path") as! String
 
-        self.status = decoder.decodeObjectForKey("status") as! String
         self.hostName = decoder.decodeObjectForKey("hostName") as! String
         self.contextPath = decoder.decodeObjectForKey("contextPath") as! String
         self.javaExecutable = decoder.decodeObjectForKey("javaExecutable") as! String
@@ -124,7 +124,7 @@ class AEMInstance: NSObject, NSCoding {
         self.jProfiler = decoder.decodeBoolForKey("jProfiler")
         self.customJVMArgsActive = decoder.decodeBoolForKey("customJVMArgsActive")
         
-        self.jVMDebugPort = decoder.decodeIntegerForKey("jVMDebugPort ")
+        self.jVMDebugPort = decoder.decodeIntegerForKey("jVMDebugPort")
         self.jConsolePort = decoder.decodeIntegerForKey("jConsolePort")
         self.jProfilerPort = decoder.decodeIntegerForKey("ProfilerPort")
         self.customJVMArgs = decoder.decodeObjectForKey("customJVMArgs") as! String
@@ -136,7 +136,6 @@ class AEMInstance: NSObject, NSCoding {
         coder.encodeObject(self.name, forKey: "name")
         coder.encodeObject(self.type, forKey: "type")
         coder.encodeObject(self.path, forKey: "path")
-        coder.encodeObject(self.status, forKey: "status")
         coder.encodeObject(self.hostName, forKey: "hostName")
         coder.encodeObject(self.contextPath, forKey: "contextPath")
         coder.encodeObject(self.javaExecutable, forKey: "javaExecutable")
@@ -148,7 +147,7 @@ class AEMInstance: NSObject, NSCoding {
         coder.encodeInteger(self.port, forKey: "port")
         coder.encodeInteger(self.heapMinSizeMB, forKey: "heapMinSizeMB")
         coder.encodeInteger(self.heapMaxSizeMB, forKey: "heapMaxSizeMB")
-        coder.encodeInteger(self.maxPermSizeMB, forKey: "maxePermSizeMB")
+        coder.encodeInteger(self.maxPermSizeMB, forKey: "maxPermSizeMB")
         
         coder.encodeBool(self.jVMDebug, forKey: "jVMDebug")
         coder.encodeBool(self.jConsole, forKey: "jConsole")

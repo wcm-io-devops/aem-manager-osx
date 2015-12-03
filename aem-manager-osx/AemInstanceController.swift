@@ -59,6 +59,7 @@ class AemInstanceController: NSViewController {
             jvmDebugField!.stringValue = String(aeminstance!.jVMDebugPort)
             jProfilerField!.stringValue = String(aeminstance!.jProfilerPort)
             jConsoleField!.stringValue = String(aeminstance!.jConsolePort)
+            customJvmField!.stringValue = aeminstance!.customJVMArgs
             
             let runMode =  aeminstance!.runMode
             if runMode == RunMode.Author{
@@ -133,6 +134,7 @@ class AemInstanceController: NSViewController {
         aeminstance!.jVMDebugPort = jvmDebugField!.integerValue
         aeminstance!.jProfilerPort = jProfilerField!.integerValue
         aeminstance!.jConsolePort = jConsoleField!.integerValue
+        aeminstance!.customJVMArgs = customJvmField!.stringValue
         aeminstance!.runMode = authorRadioButton?.state == NSOnState ? RunMode.Author : RunMode.Publish
         
         aeminstance!.jProfiler = jProfilerCheckBox.state == NSOnState ? true : false

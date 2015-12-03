@@ -14,15 +14,24 @@ class ViewController: NSViewController {
     @IBOutlet weak var table: NSTableView!
     
     
-    var  instances = AEMInstance.loadAEMInstances()
+    var instances = AEMInstance.loadAEMInstances()
     var selectedInstance: AEMInstance?
     
     var guiarray:[NSWindowController] = []
     
-    override func viewDidAppear() {
-        for a in instances {
-            print(a.id)
+    func backgroundThread(delay: Double = 0.0, background: (() -> Void)? = nil, completion: (() -> Void)? = nil) {
+        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
+            if(background != nil){ background!(); }
+            
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
+            dispatch_after(popTime, dispatch_get_main_queue()) {
+                if(completion != nil){ completion!(); }
+            }
         }
+    }
+    
+    override func viewDidAppear() {
+ 
     }
     
     override func viewDidLoad() {
@@ -91,6 +100,14 @@ class ViewController: NSViewController {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Start Instance")
+            backgroundThread(background: {
+                  AemActions.startInstance(self.selectedInstance!)
+                 //NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
+            },completion: {
+                    // A function to run in the foreground when the background thread is complete
+                   //   NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
+            })
+          
         }
         
     }
@@ -101,6 +118,7 @@ class ViewController: NSViewController {
             performSegueWithIdentifier("noInstance",sender: self)
         }else{
             print("Stop Instance")
+            AemActions.stopInstance(selectedInstance!)
         }
     }
     
@@ -201,7 +219,16 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
             case "name": return instances[row].name
             case "path": return instances[row].path
             case "type": return instances[row].type
-            case "status": return instances[row].status
+            case "status":
+                let status = instances[row].status
+                switch status {
+                case .Running: return "Running"
+                case .Starting_Stopping: return "Starting/Stopping"
+                case .Unknown: return "Unknown"
+                case .NotActive: return "Not active"
+                case .Disabled: return "Disabled"
+                }
+            
             case "url": return AEMInstance.getUrl(instances[row])
             default: break
             }

@@ -60,9 +60,15 @@
                                         <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
                                         <menuItem title="Start Instance" id="nQO-9k-G8R">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="startInstance:" target="Ady-hI-5gd" id="TmY-PI-y0o"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Stop Instance" id="X9v-gt-OdP">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="stopInstance:" target="Ady-hI-5gd" id="8UD-T7-7H3"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="3G4-uC-yXn"/>
                                         <menuItem title="Open Author/Publish" id="Xo1-GD-Bcg">
@@ -461,7 +467,7 @@ Gw
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lOc-h7-VBy">
                                 <rect key="frame" x="18" y="53" width="82" height="17"/>
                                 <animations/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Pem Gem" id="Xm6-th-U9i">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Perm Gem" id="Xm6-th-U9i">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
