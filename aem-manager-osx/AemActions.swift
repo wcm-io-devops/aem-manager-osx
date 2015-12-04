@@ -19,7 +19,7 @@ class AemActions: NSObject {
         // menory settings
         javaArgs.append("-Xms\(instance.heapMinSizeMB)M")
         javaArgs.append("-Xmx\(instance.heapMaxSizeMB)M")
-        javaArgs.append("-XX:MaxPermSize=\(instance.maxPermSizeMB)M")
+       // javaArgs.append("-XX:MaxPermSize=\(instance.maxPermSizeMB)M")
         
         if instance.type == AEMInstance.defaultType{
             jarArgs.append("-p\(instance.port)")
@@ -36,10 +36,11 @@ class AemActions: NSObject {
         
         // Debug
         if instance.jVMDebug && instance.jVMDebugPort > 0 {
-            javaArgs.append("-Xdebug")
-            javaArgs.append("-Xnoagent")
-            javaArgs.append("-Djava.compiler=NONE")
-            javaArgs.append("-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=\(instance.jVMDebugPort)")
+           // javaArgs.append("-Xdebug")
+            //javaArgs.append("-Xnoagent")
+            //javaArgs.append("-Djava.compiler=NONE")
+            //javaArgs.append("-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=\(instance.jVMDebugPort)")
+            javaArgs.append("-agentlib:jdwp=transport=dt_socket,address=\(instance.jVMDebugPort),server=y,suspend=n")
         }
         
         if instance.jProfiler && instance.jProfilerPort > 0 {
@@ -60,7 +61,7 @@ class AemActions: NSObject {
         if instance.type == AEMInstance.defaultType {
             jarArgs.append("-nofork")
         }
-        // jarArgs.append("-v")
+        jarArgs.append("-v")
         
         
         javaArgs.append("-jar")
