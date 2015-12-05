@@ -37,6 +37,10 @@ class AemInstanceController: NSViewController {
     @IBOutlet weak var customJvmField: NSTextField!
     @IBOutlet weak var authorRadioButton: NSButton!
     @IBOutlet weak var publishRadioButton: NSButton!
+    @IBOutlet weak var iconCheckBox: NSButton!
+    @IBOutlet weak var processWindowCheckBox: NSButton!
+    @IBOutlet weak var openBrowserCheckBox: NSButton!
+    @IBOutlet weak var iconSetComboBox: NSComboBox!
     
     
     @IBOutlet weak var runModeRadio: NSButton!
@@ -73,6 +77,11 @@ class AemInstanceController: NSViewController {
             jConsoleCheckBox.state = aeminstance?.jConsole == true ? NSOnState : NSOffState
             customJvmCheckBox.state = aeminstance?.customJVMArgsActive == true ? NSOnState : NSOffState
             jvmDebugCheckBox.state = aeminstance?.jVMDebug == true ? NSOnState : NSOffState
+            
+            iconCheckBox.state = aeminstance?.showIcon == true ? NSOnState : NSOffState
+            processWindowCheckBox.state = aeminstance?.showProcess == true ? NSOnState : NSOffState
+            openBrowserCheckBox.state = aeminstance?.openBrowser == true ? NSOnState : NSOffState
+            iconSetComboBox?.stringValue = aeminstance!.icon
             
         }
         
@@ -142,6 +151,11 @@ class AemInstanceController: NSViewController {
         aeminstance!.customJVMArgsActive = customJvmCheckBox.state == NSOnState ? true : false
         aeminstance!.jVMDebug = jvmDebugCheckBox.state == NSOnState ? true : false
         
+        aeminstance!.showProcess = processWindowCheckBox.state == NSOnState ? true : false
+        aeminstance!.showIcon = iconCheckBox.state == NSOnState ? true : false
+        aeminstance!.openBrowser = openBrowserCheckBox.state == NSOnState ? true : false
+        aeminstance!.icon = iconSetComboBox!.stringValue
+        
         if AEMInstance.validate(aeminstance!){
             
             if instances.contains(aeminstance!){
@@ -176,13 +190,36 @@ class AemInstanceController: NSViewController {
         }
     }
     
+    @IBAction func showIcon(sender: NSButton) {
+        if sender.state == NSOnState {
+            aeminstance!.showIcon = true
+        }else {
+            aeminstance!.showIcon = false
+        }
+    }
+    
+    @IBAction func showProcessOnStartup(sender: NSButton) {
+        if sender.state == NSOnState{
+            aeminstance!.showProcess = true
+        }else{
+            aeminstance!.showProcess = false
+        }
+    }
+    
+    @IBAction func openBrowser(sender: NSButton) {
+        if sender.state == NSOnState{
+            aeminstance!.openBrowser = true
+        }else{
+            aeminstance!.openBrowser = false
+        }
+    }
     
     @IBAction func changeRunMode(sender: NSButton) {
         if sender === authorRadioButton{
-            aeminstance?.runMode = RunMode.Author
+            aeminstance!.runMode = RunMode.Author
         }else
         {
-            aeminstance?.runMode = RunMode.Publish
+            aeminstance!.runMode = RunMode.Publish
         }
     }
     

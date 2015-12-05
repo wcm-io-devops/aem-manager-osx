@@ -46,6 +46,10 @@ class AEMInstance: NSObject, NSCoding {
     var jConsolePort = 0
     var customJVMArgsActive = false
     var customJVMArgs = ""
+    var showIcon = false
+    var icon = "Number 1"
+    var showProcess = false
+    var openBrowser = false
     
     static func save(instance: [AEMInstance]) -> Bool {
         if let path = getPath(){
@@ -129,6 +133,11 @@ class AEMInstance: NSObject, NSCoding {
         self.jProfilerPort = decoder.decodeIntegerForKey("ProfilerPort")
         self.customJVMArgs = decoder.decodeObjectForKey("customJVMArgs") as! String
         
+        self.showIcon = decoder.decodeBoolForKey("showIcon")
+        self.showProcess = decoder.decodeBoolForKey("showProcess")
+        self.openBrowser = decoder.decodeBoolForKey("openBrowser")
+        self.icon = decoder.decodeObjectForKey("icon") as! String
+        
         
     }
     func encodeWithCoder(coder: NSCoder) {
@@ -158,6 +167,11 @@ class AEMInstance: NSObject, NSCoding {
         coder.encodeInteger(self.jConsolePort, forKey: "jConsolePort")
         coder.encodeInteger(self.jProfilerPort, forKey: "ProfilerPort")
         coder.encodeObject(self.customJVMArgs, forKey: "customJVMArgs")
+        
+        coder.encodeBool(self.showIcon, forKey: "showIcon")
+        coder.encodeBool(self.showProcess, forKey: "showProcess")
+        coder.encodeBool(self.openBrowser, forKey: "openBrowser")
+        coder.encodeObject(self.icon, forKey: "icon")
         
     }
     

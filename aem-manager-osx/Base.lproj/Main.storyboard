@@ -431,7 +431,7 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="UAH-DY-t3R">
-                                <rect key="frame" x="25" y="155" width="537" height="5"/>
+                                <rect key="frame" x="20" y="155" width="569" height="5"/>
                                 <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -638,6 +638,74 @@ Gw
                                     <action selector="changeRunMode:" target="diZ-jV-1LB" id="Wse-ou-t9q"/>
                                 </connections>
                             </button>
+                            <box horizontalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Iky-es-hrN">
+                                <rect key="frame" x="381" y="166" width="5" height="97"/>
+                                <animations/>
+                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                                <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <font key="titleFont" metaFont="system"/>
+                            </box>
+                            <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B0u-mk-FtP">
+                                <rect key="frame" x="476" y="212" width="89" height="26"/>
+                                <animations/>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="8" id="RIR-Hj-W5B">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <objectValues>
+                                        <string>Number 1</string>
+                                        <string>Number 2</string>
+                                        <string>Number 3</string>
+                                        <string>Number 4</string>
+                                        <string>Number 5</string>
+                                        <string>Number 6</string>
+                                        <string>Number 7</string>
+                                        <string>Number 8</string>
+                                    </objectValues>
+                                </comboBoxCell>
+                            </comboBox>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xlf-nb-5SA">
+                                <rect key="frame" x="408" y="245" width="182" height="18"/>
+                                <animations/>
+                                <buttonCell key="cell" type="check" title="Show Icon on Menubar" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="TfF-dk-g50">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showIcon:" target="diZ-jV-1LB" id="9Iy-B7-pLS"/>
+                                </connections>
+                            </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FXW-7t-SVr">
+                                <rect key="frame" x="408" y="189" width="183" height="18"/>
+                                <animations/>
+                                <buttonCell key="cell" type="check" title="Show Process Window" bezelStyle="regularSquare" imagePosition="left" inset="2" id="xPH-qK-Wtc">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showProcessOnStartup:" target="diZ-jV-1LB" id="6o6-oU-ruc"/>
+                                </connections>
+                            </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RRo-NH-vdx">
+                                <rect key="frame" x="408" y="164" width="182" height="18"/>
+                                <animations/>
+                                <buttonCell key="cell" type="check" title="Open Browser after start" bezelStyle="regularSquare" imagePosition="left" inset="2" id="4Z9-qJ-BIf">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="openBrowser:" target="diZ-jV-1LB" id="0yA-hy-Gym"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ddy-Mt-lNn">
+                                <rect key="frame" x="408" y="218" width="79" height="17"/>
+                                <animations/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Icon Set" id="bk5-wp-6n4">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <animations/>
                     </view>
@@ -649,6 +717,8 @@ Gw
                         <outlet property="heapMaxField" destination="e1D-M5-smI" id="8s6-Rf-MpC"/>
                         <outlet property="heapMinField" destination="zLD-gX-69m" id="HqI-k6-zuw"/>
                         <outlet property="hostnameField" destination="mUm-2n-Aec" id="8Fk-ch-TBh"/>
+                        <outlet property="iconCheckBox" destination="xlf-nb-5SA" id="MDa-02-hop"/>
+                        <outlet property="iconSetComboBox" destination="B0u-mk-FtP" id="EQL-qU-Amu"/>
                         <outlet property="jConsoleCheckBox" destination="5gd-39-SgV" id="WFj-T8-Vcz"/>
                         <outlet property="jConsoleField" destination="hOJ-nw-W6s" id="Ry7-vD-v1Y"/>
                         <outlet property="jProfilerCheckBox" destination="7cv-Jy-Hau" id="kZ3-qF-TNu"/>
@@ -658,9 +728,11 @@ Gw
                         <outlet property="jvmDebugCheckBox" destination="0W2-XE-JlE" id="JX0-55-LsW"/>
                         <outlet property="jvmDebugField" destination="cZF-Tf-Vax" id="9uQ-ss-qsC"/>
                         <outlet property="nameField" destination="LXU-7x-zGS" id="8o8-bS-8dh"/>
+                        <outlet property="openBrowserCheckBox" destination="RRo-NH-vdx" id="VZn-Ks-D6G"/>
                         <outlet property="passwordField" destination="SrO-XS-YNf" id="2tK-WZ-EnH"/>
                         <outlet property="pemGemField" destination="gbI-K5-ujV" id="iat-2r-h4n"/>
                         <outlet property="portField" destination="3gO-SQ-rjd" id="sGm-ul-Aqz"/>
+                        <outlet property="processWindowCheckBox" destination="FXW-7t-SVr" id="17O-3p-xe8"/>
                         <outlet property="publishRadioButton" destination="17R-hJ-xbg" id="YxW-92-fG2"/>
                         <outlet property="sampleContentCheckBox" destination="X8M-gq-JEe" id="O4f-tb-Y05"/>
                         <outlet property="typeComboBox" destination="T2j-Ag-b60" id="pHB-N6-QaC"/>
