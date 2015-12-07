@@ -55,14 +55,21 @@ class AemActions: NSObject {
         if instance.customJVMArgsActive && !instance.customJVMArgs.isEmpty{
             javaArgs.append(instance.customJVMArgs)
         }
+        
         javaArgs.append("-DhideConfigWizard=true")
         
         // TODO: add startmode (jar args)
         if instance.type == AEMInstance.defaultType {
             jarArgs.append("-nofork")
         }
-        jarArgs.append("-v")
         
+        if instance.showProcess {
+            jarArgs.append("-v")
+        }
+      
+        if !instance.openBrowser{
+            jarArgs.append("-nobrowser")
+        }
         
         javaArgs.append("-jar")
         javaArgs.append("\(instance.path)")
