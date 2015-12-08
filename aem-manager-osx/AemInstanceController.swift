@@ -166,18 +166,7 @@ class AemInstanceController: NSViewController {
             
             print("Saving Instance to db with name:\(aeminstance!.name) and id: \(aeminstance?.id)")
             AEMInstance.save(instances)
-         
-            
-            /*
-            if let winCrtl = storyboard!.instantiateControllerWithIdentifier("mainView") as? NSWindowController {
-                if let aemInstanceGui = winCrtl.contentViewController as? ViewController{
-                    aemInstanceGui.instances = AEMInstance.loadAEMInstances()
-                    print(aemInstanceGui)
-                    aemInstanceGui.table.reloadData()
-                }
-                
-            }
-*/
+
             NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
 
             view.window?.close()

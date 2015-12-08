@@ -19,7 +19,7 @@ class AemActions: NSObject {
         // menory settings
         javaArgs.append("-Xms\(instance.heapMinSizeMB)M")
         javaArgs.append("-Xmx\(instance.heapMaxSizeMB)M")
-       // javaArgs.append("-XX:MaxPermSize=\(instance.maxPermSizeMB)M")
+        javaArgs.append("-XX:MaxPermSize=\(instance.maxPermSizeMB)M")
         
         if instance.type == AEMInstance.defaultType{
             jarArgs.append("-p\(instance.port)")
@@ -75,7 +75,7 @@ class AemActions: NSObject {
         javaArgs.append("\(instance.path)")
         
         args = javaArgs + jarArgs
-        print("Args:\(args)")
+        //print("Args:\(args)")
         
         return args
     }
@@ -89,11 +89,12 @@ class AemActions: NSObject {
         let task = NSTask()
         task.launchPath = instance.javaExecutable
         task.arguments = buildCommandLineArguments(instance)
-        
+        print("Arguments:\(task.arguments!)")
         let pipe = NSPipe()
         task.standardOutput = pipe
         task.launch()
         task.waitUntilExit()
+       
         
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()

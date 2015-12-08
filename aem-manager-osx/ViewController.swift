@@ -56,6 +56,8 @@ class ViewController: NSViewController {
                 statusBarItem.image = icon
                 
                 let menu : NSMenu = NSMenu()
+                menu.autoenablesItems = false
+                
                 let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: "startInstance2:", k: "",instance: instance)
                 menu.addItem(startInstanceMenuItem)
                 
@@ -299,6 +301,7 @@ class ViewController: NSViewController {
     }
     
     func reloadTableData(notification: NSNotification){
+        instances = AEMInstance.loadAEMInstances()
         table.reloadData()
     }
     
