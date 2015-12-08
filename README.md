@@ -39,6 +39,5 @@ For each instance icon a context menu offers to start/stop the instance, open lo
 
 Known Bugs
 ----------
-* Table is not reloaded, after instance is added. Program must start again to show new instance.
-
-
+* No JProfiler Support
+* Some java args seems not supported by NSTask()
