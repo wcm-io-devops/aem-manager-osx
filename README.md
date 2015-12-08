@@ -21,13 +21,9 @@ Tested with OSX 10.11 El Capitan.
 Features
 --------
 
-After starting the AEM manager a new icon is displayed in the Menubar:
+After starting the AEM manager a table with the instances is shown:
 
-![AEM Manager in Menubar](/images/aem-manager-taskbar.png)
-
-A double click on the icon opens the list of instances
-
-![AEM Manager Instance List](/images/aem-manager.png)
+![AEM Manager on Startup](/images/aem-manager-startup.png)
 
 You can define new instances:
 
@@ -40,5 +36,9 @@ The main menubar icon offers a context menu with some global useful links, and t
 For each instance icon a context menu offers to start/stop the instance, open log files or open a browser to jump into different entry points:
 
 ![AEM Instance Context Menu](/images/aem-instance-context-menu.png)
+
+Known Bugs
+----------
+* Table is not reloaded, after instance is added. Program must start again to show new instance.
 
 
