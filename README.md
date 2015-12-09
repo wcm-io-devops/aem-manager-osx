@@ -7,13 +7,14 @@ Taskbar application for managing AEM instances on Mac OSX.
 Overview
 ---------
 
-The AEM manager is a Mac OSX application that allows to manage local AEM instances for AEM developers. It allows to start, stop instances and monitor their bundles statuses in the menubar. Via menubar quick links are available to the most important entry points.
+The AEM manager is a Mac OSX application that allows to manage local AEM instances for AEM developers. It allows to start, stop instances in the menubar. Via menubar quick links are available to the most important entry points.
 
 
 Installation
 ------------
 
-* TODO
+* Download the latest release from the [Releases](https://github.com/petermannel/aem-manager-osx/releases) section.
+* Install DMG File to your Applications Folder. The DMG File is not signed, so enable GateKeeper for App-Download from anywhere in your security settings.
 
 Tested with OSX 10.11 El Capitan.
 
