@@ -34,6 +34,8 @@ class ViewController: NSViewController {
         }
     }
     
+    
+    
     override func viewDidAppear() {
         
     }
@@ -321,7 +323,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
             case "name": return instances[row].name
             case "path": return instances[row].path
             case "type": return instances[row].type
-            case "status":
+           /* case "status":
                 let status = instances[row].status
                 switch status {
                 case .Running: return "Running"
@@ -330,7 +332,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
                 case .NotActive: return "Not active"
                 case .Disabled: return "Disabled"
                 }
-                
+                */
             case "url": return AEMInstance.getUrl(instances[row])
             default: break
             }

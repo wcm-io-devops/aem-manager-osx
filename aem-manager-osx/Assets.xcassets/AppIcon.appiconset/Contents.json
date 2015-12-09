@@ -1,8 +1,9 @@
 {
   "images" : [
     {
-      "idiom" : "mac",
       "size" : "16x16",
+      "idiom" : "mac",
+      "filename" : "16_logo.png",
       "scale" : "1x"
     },
     {
@@ -13,7 +14,7 @@
     {
       "size" : "32x32",
       "idiom" : "mac",
-      "filename" : "default.png",
+      "filename" : "32_logo.png",
       "scale" : "1x"
     },
     {

@@ -105,6 +105,7 @@ class AemActions: NSObject {
         }
         print(output)
         instance.status = BundleStatus.Running
+
         return output
         
     }
