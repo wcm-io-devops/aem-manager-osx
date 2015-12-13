@@ -57,6 +57,12 @@
                                                 <action selector="editInstance:" target="Ady-hI-5gd" id="1en-8U-9P1"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Delete" id="Wew-Bt-1IP">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="deleteInstance:" target="Ady-hI-5gd" id="tHR-9i-7ee"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
                                         <menuItem title="Start Instance" id="nQO-9k-G8R">
                                             <modifierMask key="keyEquivalentModifierMask"/>

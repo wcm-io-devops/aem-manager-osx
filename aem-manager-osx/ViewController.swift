@@ -145,6 +145,24 @@ class ViewController: NSViewController {
         
     }
     
+    @IBAction func deleteInstance(sender: NSMenuItem) {
+        
+        
+        if table.selectedRow < 0 {
+            performSegueWithIdentifier("noInstance",sender: self)
+        }else{
+            if instances.contains(selectedInstance!){
+                instances.removeAtIndex(instances.indexOf(selectedInstance!)!)
+                
+                print("Deleting Instance with name:\(selectedInstance!.name) and id: \(selectedInstance?.id)")
+                AEMInstance.save(instances)
+                
+                NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
+            }
+        }
+        
+    }
+    
     @IBAction func startInstance(sender: NSMenuItem) {
         
         if table.selectedRow < 0 {
