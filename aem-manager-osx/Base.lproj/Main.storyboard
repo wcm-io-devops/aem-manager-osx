@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -102,8 +102,17 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="Hd9-3t-0dC"/>
-                                        <menuItem title="Show Error Log" id="jwL-iF-9Bf">
+                                        <menuItem title="Error Log" id="jwL-iF-9Bf">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openErrorLog:" target="Ady-hI-5gd" id="fSv-Yt-7cC"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Request Log" id="2Yq-aw-AQU">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openRequestLog:" target="Ady-hI-5gd" id="PK6-aJ-v27"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
@@ -185,7 +194,6 @@
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gx6-9Z-PwA">
                                 <rect key="frame" x="77" y="55" width="194" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="No Instance selected!" id="1Ds-9y-EMV">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -193,7 +201,6 @@
                                 </textFieldCell>
                             </textField>
                         </subviews>
-                        <animations/>
                     </view>
                 </viewController>
                 <customObject id="4tH-h4-xJF" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -210,7 +217,6 @@
                         <subviews>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LXU-7x-zGS">
                                 <rect key="frame" x="107" y="377" width="198" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Uz9-jd-0SJ">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -219,7 +225,6 @@
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H33-zU-Fc2">
                                 <rect key="frame" x="487" y="374" width="81" height="32"/>
-                                <animations/>
                                 <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aK8-OF-ggO">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -233,7 +238,6 @@ DQ
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="21j-97-kAi">
                                 <rect key="frame" x="487" y="341" width="81" height="32"/>
-                                <animations/>
                                 <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dX0-2T-jGX">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -247,7 +251,6 @@ Gw
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GQY-Ys-zZr">
                                 <rect key="frame" x="18" y="352" width="71" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Hostname" id="T6z-7q-1J8">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -256,7 +259,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N6K-h5-5d1">
                                 <rect key="frame" x="18" y="322" width="88" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Context Path" id="Mt4-sU-6uc">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -265,7 +267,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fvQ-pi-PGt">
                                 <rect key="frame" x="287" y="352" width="63" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Port " id="0P1-TC-2L5">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -274,7 +275,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ovI-lQ-Fk1">
                                 <rect key="frame" x="287" y="323" width="99" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Type" id="i5z-eB-JkK">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -283,7 +283,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mUm-2n-Aec">
                                 <rect key="frame" x="107" y="348" width="164" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="l0D-JG-vmc">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -292,7 +291,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AfK-DE-Q4U">
                                 <rect key="frame" x="107" y="320" width="164" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="rTR-48-yss">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -301,7 +299,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3gO-SQ-rjd">
                                 <rect key="frame" x="325" y="348" width="96" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Epn-zz-AOb">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -310,7 +307,6 @@ Gw
                             </textField>
                             <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T2j-Ag-b60">
                                 <rect key="frame" x="325" y="316" width="158" height="26"/>
-                                <animations/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="2" id="hgH-uJ-5IR">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -323,7 +319,6 @@ Gw
                             </comboBox>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zqp-gN-Kpp">
                                 <rect key="frame" x="18" y="295" width="82" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Run Mode" id="INk-9d-u02">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -332,7 +327,6 @@ Gw
                             </textField>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="17R-hJ-xbg">
                                 <rect key="frame" x="188" y="294" width="85" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="radio" title="Publish" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="6jM-9U-10B">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -343,7 +337,6 @@ Gw
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X8M-gq-JEe">
                                 <rect key="frame" x="105" y="271" width="318" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="check" title="Install AEM Sample Content on first startup" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="AO0-5y-jm4">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -354,7 +347,6 @@ Gw
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q5n-uU-q1P">
                                 <rect key="frame" x="18" y="244" width="88" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="AEM Jar File" id="hHE-8K-oAI">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -363,7 +355,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1wX-T4-2Fv">
                                 <rect key="frame" x="18" y="220" width="82" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Java Exec" id="r4M-tL-c5B">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -372,7 +363,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ler-DQ-cv1">
                                 <rect key="frame" x="107" y="240" width="218" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="n0N-4j-XAf">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -381,7 +371,6 @@ Gw
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gyg-uA-kIg">
                                 <rect key="frame" x="335" y="243" width="26" height="21"/>
-                                <animations/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iSx-wa-Oia">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -392,7 +381,6 @@ Gw
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d9R-ca-OrU">
                                 <rect key="frame" x="18" y="194" width="88" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Username" id="rA1-Ur-DL4">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -401,7 +389,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gNf-dR-kU1">
                                 <rect key="frame" x="18" y="169" width="82" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Password" id="6xY-AA-lwt">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -410,7 +397,6 @@ Gw
                             </textField>
                             <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SrO-XS-YNf">
                                 <rect key="frame" x="107" y="166" width="218" height="22"/>
-                                <animations/>
                                 <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="wNh-LU-zCa">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -422,7 +408,6 @@ Gw
                             </secureTextField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P2o-ep-9DQ">
                                 <rect key="frame" x="107" y="191" width="218" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="LU5-N4-3aI">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -431,14 +416,12 @@ Gw
                             </textField>
                             <box verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="UAH-DY-t3R">
                                 <rect key="frame" x="20" y="155" width="569" height="5"/>
-                                <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <font key="titleFont" metaFont="system"/>
                             </box>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cD6-wf-Mz9">
                                 <rect key="frame" x="18" y="132" width="82" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="JVM Settings" id="xYS-yC-DHN">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -447,7 +430,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LIS-IJ-ehn">
                                 <rect key="frame" x="18" y="104" width="82" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Heap MIn" id="clj-eX-1CR">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -456,7 +438,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="esV-FI-ROY">
                                 <rect key="frame" x="18" y="80" width="82" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Heap Max" id="GsM-rj-5a0">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -465,7 +446,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lOc-h7-VBy">
                                 <rect key="frame" x="18" y="53" width="82" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Perm Gem" id="Xm6-th-U9i">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -474,7 +454,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zLD-gX-69m">
                                 <rect key="frame" x="107" y="103" width="74" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="8PB-yR-BTK">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -483,7 +462,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e1D-M5-smI">
                                 <rect key="frame" x="107" y="77" width="74" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="o4r-OI-6xc">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -492,7 +470,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbI-K5-ujV">
                                 <rect key="frame" x="107" y="50" width="74" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="gIZ-rR-sV1">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -501,7 +478,6 @@ Gw
                             </textField>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0W2-XE-JlE">
                                 <rect key="frame" x="200" y="105" width="243" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="check" title="Enable JVM Debugging" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ehk-PL-u9T">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -512,7 +488,6 @@ Gw
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7cv-Jy-Hau">
                                 <rect key="frame" x="200" y="79" width="216" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="check" title="Enable JProfiler instrumentation" bezelStyle="regularSquare" imagePosition="left" inset="2" id="u9J-cQ-86q">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -523,7 +498,6 @@ Gw
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gd-39-SgV">
                                 <rect key="frame" x="200" y="52" width="223" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="check" title="Enable JConsole Support" bezelStyle="regularSquare" imagePosition="left" inset="2" id="AdO-jc-bE6">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -534,7 +508,6 @@ Gw
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n7o-m1-R6T">
                                 <rect key="frame" x="545" y="106" width="37" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Port" id="mcN-2r-pd8">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -543,7 +516,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CRa-85-1gn">
                                 <rect key="frame" x="545" y="80" width="37" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Port" id="qWT-hd-2ta">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -552,7 +524,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="giT-d9-RTD">
                                 <rect key="frame" x="545" y="55" width="37" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Port" id="K7g-J4-un1">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -561,7 +532,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cZF-Tf-Vax">
                                 <rect key="frame" x="443" y="102" width="96" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="39j-Om-s30">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -570,7 +540,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lua-rJ-Enj">
                                 <rect key="frame" x="443" y="77" width="96" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ReY-dh-2d9">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -579,7 +548,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hOJ-nw-W6s">
                                 <rect key="frame" x="443" y="50" width="96" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="iRs-L8-9Fp">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -588,7 +556,6 @@ Gw
                             </textField>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RHU-FJ-PeW">
                                 <rect key="frame" x="18" y="18" width="229" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="check" title="Custom JVM Settings" bezelStyle="regularSquare" imagePosition="left" inset="2" id="bZ4-es-wu4">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -599,7 +566,6 @@ Gw
                             </button>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4gh-zc-bqE">
                                 <rect key="frame" x="202" y="16" width="245" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="7el-Sz-VBx">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -608,7 +574,6 @@ Gw
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5j4-g0-qWg">
                                 <rect key="frame" x="18" y="382" width="64" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Name" id="jAi-hH-izS">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -617,7 +582,6 @@ Gw
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1H7-w2-BQw">
                                 <rect key="frame" x="335" y="216" width="26" height="21"/>
-                                <animations/>
                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ji7-bB-PHi">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -628,7 +592,6 @@ Gw
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W7q-dl-f6c">
                                 <rect key="frame" x="106" y="294" width="77" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="radio" title="Author" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="XJr-i4-lUl">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -639,14 +602,12 @@ Gw
                             </button>
                             <box horizontalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Iky-es-hrN">
                                 <rect key="frame" x="381" y="166" width="5" height="97"/>
-                                <animations/>
                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <font key="titleFont" metaFont="system"/>
                             </box>
                             <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B0u-mk-FtP">
                                 <rect key="frame" x="476" y="212" width="89" height="26"/>
-                                <animations/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="8" id="RIR-Hj-W5B">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -665,7 +626,6 @@ Gw
                             </comboBox>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xlf-nb-5SA">
                                 <rect key="frame" x="408" y="245" width="182" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="check" title="Show Icon on Menubar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="TfF-dk-g50">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -676,7 +636,6 @@ Gw
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FXW-7t-SVr">
                                 <rect key="frame" x="408" y="189" width="183" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="check" title="Show Process Window" bezelStyle="regularSquare" imagePosition="left" inset="2" id="xPH-qK-Wtc">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -687,7 +646,6 @@ Gw
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RRo-NH-vdx">
                                 <rect key="frame" x="408" y="164" width="182" height="18"/>
-                                <animations/>
                                 <buttonCell key="cell" type="check" title="Open Browser after start" bezelStyle="regularSquare" imagePosition="left" inset="2" id="4Z9-qJ-BIf">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -698,7 +656,6 @@ Gw
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ddy-Mt-lNn">
                                 <rect key="frame" x="408" y="218" width="79" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Icon Set" id="bk5-wp-6n4">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -707,7 +664,6 @@ Gw
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wjy-m2-YPy">
                                 <rect key="frame" x="107" y="216" width="218" height="22"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="3tz-hg-Mbw">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -715,7 +671,6 @@ Gw
                                 </textFieldCell>
                             </textField>
                         </subviews>
-                        <animations/>
                     </view>
                     <connections>
                         <outlet property="authorRadioButton" destination="W7q-dl-f6c" id="Ixo-qc-wKL"/>
@@ -762,7 +717,6 @@ Gw
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MyV-Df-NJx">
                                 <rect key="frame" x="47" y="52" width="179" height="17"/>
-                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Invalid or missing Parameter!" id="2cs-y7-bhb">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -770,7 +724,6 @@ Gw
                                 </textFieldCell>
                             </textField>
                         </subviews>
-                        <animations/>
                     </view>
                 </viewController>
                 <customObject id="r1W-Hb-QzZ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -794,7 +747,6 @@ Gw
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="zjI-h8-NOm" id="qeo-WF-j0P">
                                             <rect key="frame" x="0.0" y="0.0" width="666" height="285"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <animations/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
@@ -838,7 +790,7 @@ Gw
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 </tableColumn>
-                                                <tableColumn identifier="path" editable="NO" width="175.19140625" minWidth="10" maxWidth="3.4028234663852886e+38" id="7kD-sI-NdF">
+                                                <tableColumn identifier="path" editable="NO" width="176" minWidth="10" maxWidth="3.4028234663852886e+38" id="7kD-sI-NdF">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Path">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -854,28 +806,22 @@ Gw
                                             </tableColumns>
                                         </tableView>
                                     </subviews>
-                                    <animations/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <animations/>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="sKU-dB-yHi">
-                                    <rect key="frame" x="1" y="292" width="666" height="16"/>
+                                    <rect key="frame" x="1" y="7" width="0.0" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="d7x-JV-GKk">
                                     <rect key="frame" x="-15" y="23" width="16" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
                                 </scroller>
                                 <tableHeaderView key="headerView" id="zjI-h8-NOm">
                                     <rect key="frame" x="0.0" y="0.0" width="666" height="23"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
                                 </tableHeaderView>
                             </scrollView>
                         </subviews>
-                        <animations/>
                     </view>
                     <connections>
                         <outlet property="table" destination="qeo-WF-j0P" id="ZtL-OA-qdq"/>

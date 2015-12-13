@@ -83,6 +83,14 @@ class ViewController: NSViewController {
                 let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: "openFelixConsole2:", k: "",instance: instance)
                 menu.addItem(openFelixConsole)
                 
+                menu.addItem(NSMenuItem.separatorItem())
+                
+                let eLog = InstanceMenuItem(t: "Error Log", a: "openErrorLog2:", k: "",instance: instance)
+                menu.addItem(eLog)
+                
+                let rLog = InstanceMenuItem(t: "Request Log", a: "openRequestLog2:", k: "",instance: instance)
+                menu.addItem(rLog)
+                
                 statusBarItem.menu = menu
                 
             }
@@ -300,6 +308,49 @@ class ViewController: NSViewController {
     
     func openFelixConsole2(sender: InstanceMenuItem) {
         openFelixConsoleFunc(sender.ins)
+    }
+    
+    @IBAction func openErrorLog(sender: NSMenuItem) {
+        if table.selectedRow < 0 {
+            performSegueWithIdentifier("noInstance",sender: self)
+        }else{
+            openErrorLogFunc(selectedInstance!)
+        }
+    }
+    
+    func openErrorLog2(sender: InstanceMenuItem) {
+        print("open Error Log")
+        openErrorLogFunc(sender.ins)
+    }
+    
+    func openErrorLogFunc(instance: AEMInstance){
+        openLogFile(instance, log: "error.log")
+    }
+    
+    func openLogFile(instance:AEMInstance, log: String){
+        var url = AEMInstance.getLogBaseFolder(instance)
+        url.appendContentsOf(log)
+        
+        let fileManager = NSFileManager.defaultManager()
+        if fileManager.fileExistsAtPath(url){
+            NSWorkspace.sharedWorkspace().openFile(url)
+        }
+    }
+    
+    @IBAction func openRequestLog(sender: NSMenuItem) {
+        if table.selectedRow < 0 {
+            performSegueWithIdentifier("noInstance",sender: self)
+        }else{
+            openRequestLogFunc(selectedInstance!)
+        }
+    }
+    
+    func openRequestLog2(sender: InstanceMenuItem) {
+        openRequestLogFunc(sender.ins)
+    }
+    
+    func openRequestLogFunc(instance: AEMInstance){
+        openLogFile(instance, log: "request.log")
     }
     
     func reloadTableData(notification: NSNotification){

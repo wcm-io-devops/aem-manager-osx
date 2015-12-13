@@ -46,7 +46,7 @@ class AEMInstance: NSObject, NSCoding {
     var jConsolePort = 0
     var customJVMArgsActive = false
     var customJVMArgs = ""
-    var showIcon = false
+    var showIcon = true
     var icon = "Number 1"
     var showProcess = false
     var openBrowser = false
@@ -100,6 +100,15 @@ class AEMInstance: NSObject, NSCoding {
         }
         
         return url
+    }
+    
+    static func getLogBaseFolder(instance: AEMInstance) -> String{
+        var path = NSString(string: instance.path).stringByDeletingLastPathComponent
+        
+        path.appendContentsOf("/crx-quickstart/logs/")
+        
+        return path
+        
     }
     
     // MARK: NSCoding
