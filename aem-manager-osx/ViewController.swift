@@ -46,49 +46,57 @@ class ViewController: NSViewController {
         table.setDelegate(self)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTableData:", name: "reload", object: nil)
-        
-        let app = NSApplication.sharedApplication().delegate as! AppDelegate
-        app.mainVC = self
-        
+
         for instance in instances{
             if instance.showIcon {
                 let statusBarItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
+                statusBarItem.target = self
                 items.append(statusBarItem)
                 let icon = NSImage(named: String(instance.icon.characters.last!))
                 statusBarItem.image = icon
+                
                 
                 let menu : NSMenu = NSMenu()
                 menu.autoenablesItems = false
                 
                 let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: "startInstance2:", k: "",instance: instance)
+                startInstanceMenuItem.target = self
                 menu.addItem(startInstanceMenuItem)
                 
                 let stopInstanceMenuItem = InstanceMenuItem(t: "Stop Instance", a: "stopInstance2:", k: "",instance: instance)
+                stopInstanceMenuItem.target = self
                 menu.addItem(stopInstanceMenuItem)
-
+                
                 menu.addItem(NSMenuItem.separatorItem())
                 
                 let openAuthorMenuItem = InstanceMenuItem(t: "Open Author/Publish", a: "openAuthor2:", k: "",instance: instance)
+                openAuthorMenuItem.target = self
                 menu.addItem(openAuthorMenuItem)
                 
                 let openCRX = InstanceMenuItem(t: "Open CRX", a: "openCRX2:", k: "",instance: instance)
+                openCRX.target = self
                 menu.addItem(openCRX)
                 
                 let openCRXContentExplorer = InstanceMenuItem(t: "Open CRX Content Explorer", a: "openCRXContentExplorer2:", k: "",instance: instance)
+                openCRXContentExplorer.target = self
                 menu.addItem(openCRXContentExplorer)
                 
                 let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: "openCRXDE2:", k: "",instance: instance)
+                openCRXContentExplorer.target = self
                 menu.addItem(openCRXDE)
                 
                 let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: "openFelixConsole2:", k: "",instance: instance)
+                openFelixConsole.target = self
                 menu.addItem(openFelixConsole)
                 
                 menu.addItem(NSMenuItem.separatorItem())
                 
                 let eLog = InstanceMenuItem(t: "Error Log", a: "openErrorLog2:", k: "",instance: instance)
+                eLog.target = self
                 menu.addItem(eLog)
                 
                 let rLog = InstanceMenuItem(t: "Request Log", a: "openRequestLog2:", k: "",instance: instance)
+                rLog.target = self
                 menu.addItem(rLog)
                 
                 statusBarItem.menu = menu
@@ -337,6 +345,10 @@ class ViewController: NSViewController {
     }
     
     func openErrorLog2(sender: InstanceMenuItem) {
+        NSApp.activateIgnoringOtherApps(true)
+        
+        self.view.window?.makeKeyAndOrderFront(self)
+        self.view.window!.orderFront(self)
         print("open Error Log")
         openErrorLogFunc(sender.ins)
     }
@@ -392,7 +404,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
             case "name": return instances[row].name
             case "path": return instances[row].path
             case "type": return instances[row].type
-           /* case "status":
+                /* case "status":
                 let status = instances[row].status
                 switch status {
                 case .Running: return "Running"

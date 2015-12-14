@@ -36,7 +36,7 @@ class AemActions: NSObject {
         
         // Debug
         if instance.jVMDebug && instance.jVMDebugPort > 0 {
-           // javaArgs.append("-Xdebug")
+            // javaArgs.append("-Xdebug")
             //javaArgs.append("-Xnoagent")
             //javaArgs.append("-Djava.compiler=NONE")
             //javaArgs.append("-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=\(instance.jVMDebugPort)")
@@ -66,7 +66,7 @@ class AemActions: NSObject {
         if instance.showProcess {
             jarArgs.append("-v")
         }
-      
+        
         if !instance.openBrowser{
             jarArgs.append("-nobrowser")
         }
@@ -94,7 +94,7 @@ class AemActions: NSObject {
         task.standardOutput = pipe
         task.launch()
         task.waitUntilExit()
-       
+        
         
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
@@ -105,7 +105,7 @@ class AemActions: NSObject {
         }
         print(output)
         instance.status = BundleStatus.Running
-
+        
         return output
         
     }

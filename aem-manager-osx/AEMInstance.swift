@@ -22,7 +22,7 @@ class AEMInstance: NSObject, NSCoding {
     let id = NSUUID().UUIDString
     var name: String = ""
     var path: String = ""
-
+    
     var type: String = defaultType
     // ?
     var status: BundleStatus = BundleStatus.NotActive
@@ -118,7 +118,7 @@ class AEMInstance: NSObject, NSCoding {
         self.name = decoder.decodeObjectForKey("name") as! String
         self.type = decoder.decodeObjectForKey("type") as! String
         self.path = decoder.decodeObjectForKey("path") as! String
-
+        
         self.hostName = decoder.decodeObjectForKey("hostName") as! String
         self.contextPath = decoder.decodeObjectForKey("contextPath") as! String
         self.javaExecutable = decoder.decodeObjectForKey("javaExecutable") as! String

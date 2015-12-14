@@ -10,7 +10,7 @@ import Cocoa
 
 class AemInstanceController: NSViewController {
     
-   var instances = [AEMInstance]()
+    var instances = [AEMInstance]()
     
     // MARK: properties
     
@@ -161,14 +161,14 @@ class AemInstanceController: NSViewController {
             if instances.contains(aeminstance!){
                 instances.removeAtIndex(instances.indexOf(aeminstance!)!)
             }
-
+            
             instances.append(aeminstance!)
             
             print("Saving Instance to db with name:\(aeminstance!.name) and id: \(aeminstance?.id)")
             AEMInstance.save(instances)
-
+            
             NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
-
+            
             view.window?.close()
             
         }
@@ -213,7 +213,6 @@ class AemInstanceController: NSViewController {
     }
     
     @IBAction func enableJVMDebugging(sender: NSButton) {
-        
         if sender.state == NSOnState{
             aeminstance!.jVMDebug = true
         }else{
@@ -253,7 +252,7 @@ class AemInstanceController: NSViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         
     }
     override func viewWillAppear() {
