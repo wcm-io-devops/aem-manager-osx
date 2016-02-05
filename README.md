@@ -3,6 +3,9 @@ AEM Manager for Mac OS X
 
 Taskbar application for managing AEM instances on Mac OS X.
 
+There is also a version for Windows:
+https://github.com/wcm-io-devops/aem-manager
+
 
 Overview
 ---------
@@ -40,5 +43,6 @@ For each instance icon a context menu offers to start/stop the instance, open lo
 
 Known Bugs
 ----------
+
 * No JProfiler Support
 * Some java args seems not supported by NSTask()
