@@ -1,5 +1,5 @@
-AEM Manager for Mac OS X
-========================
+wcm.io AEM Manager for Mac OS X
+===============================
 
 Taskbar application for managing AEM instances on Mac OS X.
 
