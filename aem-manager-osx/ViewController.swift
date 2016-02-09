@@ -38,7 +38,61 @@ class ViewController: NSViewController {
     
     override func viewDidAppear() {
         
+        checkVersionUpdate()
+        
     }
+    
+    func checkVersionUpdate(){
+        let nsObject: AnyObject? = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]
+        let version = nsObject as! String
+      
+        var tagName: String = ""
+        
+        let urlPath: String = "https://api.github.com/repos/wcm-io-devops/aem-manager-osx/releases/latest"
+        let url: NSURL = NSURL(string: urlPath)!
+        let request1: NSURLRequest = NSURLRequest(URL: url)
+        let response: AutoreleasingUnsafeMutablePointer<NSURLResponse? >= nil
+      
+        do {
+            let dataVal: NSData = try  NSURLConnection.sendSynchronousRequest(request1, returningResponse: response)
+            let jsonResult: NSDictionary = try NSJSONSerialization.JSONObjectWithData(dataVal, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+            tagName = jsonResult["tag_name"] as! String
+            if tagName.hasPrefix("v"){
+                tagName.removeAtIndex(tagName.startIndex)
+                
+            }
+            print("Tagname: \(tagName)")
+            
+        } catch (let e) {
+            print(e)
+        }
+        /*
+        let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://api.github.com/repos/wcm-io-devops/aem-manager-osx/releases/latest")!, completionHandler: { (data, response, error) -> Void in
+            do{
+              let  str = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as![String:AnyObject]
+                
+                tagName = str["tag_name"] as! String
+                if tagName.hasPrefix("v"){
+                    tagName.removeAtIndex(tagName.startIndex)
+                    
+                }
+                print("Tagname: \(tagName)")
+                print(str)
+            }
+            catch {
+                print("json error: \(error)")
+            }
+        })
+        task.resume()
+        */
+        print(version)
+        if version.versionToInt().lexicographicalCompare(tagName.versionToInt()) {
+            performSegueWithIdentifier("versionInfo",sender: self)
+        }
+        
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +100,7 @@ class ViewController: NSViewController {
         table.setDelegate(self)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTableData:", name: "reload", object: nil)
-
+        
         for instance in instances{
             if instance.showIcon {
                 let statusBarItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
@@ -447,5 +501,12 @@ class InstanceMenuItem : NSMenuItem {
     }
 }
 
-
+extension String {
+    func versionToInt() -> [Int] {
+        return self.componentsSeparatedByString(".")
+            .map {
+                Int.init($0) ?? 0
+        }
+    }
+}
 
