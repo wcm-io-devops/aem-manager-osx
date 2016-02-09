@@ -52,6 +52,12 @@
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Check for new Version" id="T0f-GP-ePg">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="checkVersionUpdate:" target="Ady-hI-5gd" id="L6h-oc-gc7"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                                         <menuItem title="Hide aem-manager-osx" keyEquivalent="h" id="Olw-nP-bQN">
                                             <connections>

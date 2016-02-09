@@ -37,22 +37,24 @@ class ViewController: NSViewController {
     
     
     override func viewDidAppear() {
-        
-        checkVersionUpdate()
-        
+        checkVersion()
     }
     
-    func checkVersionUpdate(){
+   @IBAction func checkVersionUpdate(sender: NSMenuItem){
+        checkVersion()
+    }
+    
+    func checkVersion(){
         let nsObject: AnyObject? = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]
         let version = nsObject as! String
-      
+  
         var tagName: String = ""
         
         let urlPath: String = "https://api.github.com/repos/wcm-io-devops/aem-manager-osx/releases/latest"
         let url: NSURL = NSURL(string: urlPath)!
         let request1: NSURLRequest = NSURLRequest(URL: url)
         let response: AutoreleasingUnsafeMutablePointer<NSURLResponse? >= nil
-      
+        
         do {
             let dataVal: NSData = try  NSURLConnection.sendSynchronousRequest(request1, returningResponse: response)
             let jsonResult: NSDictionary = try NSJSONSerialization.JSONObjectWithData(dataVal, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
@@ -68,20 +70,20 @@ class ViewController: NSViewController {
         }
         /*
         let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://api.github.com/repos/wcm-io-devops/aem-manager-osx/releases/latest")!, completionHandler: { (data, response, error) -> Void in
-            do{
-              let  str = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as![String:AnyObject]
-                
-                tagName = str["tag_name"] as! String
-                if tagName.hasPrefix("v"){
-                    tagName.removeAtIndex(tagName.startIndex)
-                    
-                }
-                print("Tagname: \(tagName)")
-                print(str)
-            }
-            catch {
-                print("json error: \(error)")
-            }
+        do{
+        let  str = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as![String:AnyObject]
+        
+        tagName = str["tag_name"] as! String
+        if tagName.hasPrefix("v"){
+        tagName.removeAtIndex(tagName.startIndex)
+        
+        }
+        print("Tagname: \(tagName)")
+        print(str)
+        }
+        catch {
+        print("json error: \(error)")
+        }
         })
         task.resume()
         */
@@ -89,10 +91,7 @@ class ViewController: NSViewController {
         if version.versionToInt().lexicographicalCompare(tagName.versionToInt()) {
             performSegueWithIdentifier("versionInfo",sender: self)
         }
-        
     }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
