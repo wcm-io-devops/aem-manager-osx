@@ -42,6 +42,9 @@ class AemActions: NSObject {
             //javaArgs.append("-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=\(instance.jVMDebugPort)")
             javaArgs.append("-agentlib:jdwp=transport=dt_socket,address=\(instance.jVMDebugPort),server=y,suspend=n")
         }
+        if !instance.contextPath.isEmpty && instance.contextPath != "/" {
+            jarArgs.append("-contextpath \(instance.contextPath)")
+        }
         
         if instance.jProfiler && instance.jProfilerPort > 0 {
             // javaArgs.append("-agentlib:jprofilerti=port=\(instance.jProfilerPort)")
@@ -80,10 +83,10 @@ class AemActions: NSObject {
         return args
     }
     
-    static func startInstance(instance: AEMInstance) -> String{
+    static func startInstance(instance: AEMInstance) -> String {
         
         if instance.status == BundleStatus.Running || instance.status == BundleStatus.Starting_Stopping || instance.status == BundleStatus.Unknown {
-            return ""
+            return "Instance already started!"
         }
         
         let task = NSTask()
@@ -93,9 +96,8 @@ class AemActions: NSObject {
         let pipe = NSPipe()
         task.standardOutput = pipe
         task.launch()
+        instance.status = BundleStatus.Starting_Stopping
         task.waitUntilExit()
-        
-        
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: NSUTF8StringEncoding)!
@@ -104,7 +106,7 @@ class AemActions: NSObject {
             
         }
         print(output)
-        instance.status = BundleStatus.Running
+        
         
         return output
         
@@ -136,8 +138,59 @@ class AemActions: NSObject {
             print("Response: \(response)")
             
         })
-        
+        instance.status = BundleStatus.NotActive
         task.resume()
+        
+        
+    }
+    
+    static func checkBundleState(instance: AEMInstance) {
+        
+        let PasswordString = "\(instance.userName):\(instance.password)"
+        let PasswordData = PasswordString.dataUsingEncoding(NSUTF8StringEncoding)
+        let base64EncodedCredential = PasswordData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+        var felixUrl = AEMInstance.getUrlWithContextPath(instance)
+        felixUrl.appendContentsOf("/system/console/bundles/.json")
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: felixUrl)!)
+        //request.timeoutInterval = (number as! NSTimeInterval)
+        let session = NSURLSession.sharedSession()
+        request.setValue("Basic \(base64EncodedCredential)", forHTTPHeaderField: "Authorization")
+        request.HTTPMethod = "GET"
+
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            // handle error
+            guard error == nil else { return }
+            
+            if let httpResponse = response as? NSHTTPURLResponse {
+                if httpResponse.statusCode != 200 {
+                    print("response was not 200: \(response)")
+                    instance.status = BundleStatus.Starting_Stopping
+                    return
+                }
+                else
+                {
+                    do {
+                        let jsonResult: NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                        
+                        let status = jsonResult["status"] as! String
+                        print("Status: \(status)")
+                        if status.containsString("resolved")  || status.containsString("installed"){
+                            instance.status = BundleStatus.Starting_Stopping
+                        }else{
+                            instance.status = BundleStatus.Running
+                        }
+                        
+                    } catch let error as NSError {
+                        instance.status = BundleStatus.Unknown
+                        print(error)
+                    }
+                }
+            }
+            
+        })
+        task.resume()
+        
         
         
     }

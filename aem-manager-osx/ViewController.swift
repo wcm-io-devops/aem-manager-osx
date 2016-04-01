@@ -22,6 +22,8 @@ class ViewController: NSViewController {
     var guiarray:[NSWindowController] = []
     var items: [NSStatusItem] = []
     
+    var timer = NSTimer()
+    
     
     func backgroundThread(delay: Double = 0.0, background: (() -> Void)? = nil, completion: (() -> Void)? = nil) {
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) {
@@ -38,16 +40,30 @@ class ViewController: NSViewController {
     
     override func viewDidAppear() {
         checkVersion()
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: "checkStatus", userInfo: nil, repeats: true)
+        
     }
     
-   @IBAction func checkVersionUpdate(sender: NSMenuItem){
+    func checkStatus(){
+        for instance in instances {
+            if (instance.status == BundleStatus.Starting_Stopping || instance.status == BundleStatus.Unknown   ||
+                instance.status == BundleStatus.Running ) {
+                    AemActions.checkBundleState(instance)
+            }
+        }
+        
+        table.reloadData()
+    }
+    
+    @IBAction func checkVersionUpdate(sender: NSMenuItem){
         checkVersion()
     }
     
     func checkVersion(){
         let nsObject: AnyObject? = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]
         let version = nsObject as! String
-  
+        
         var tagName: String = ""
         
         let urlPath: String = "https://api.github.com/repos/wcm-io-devops/aem-manager-osx/releases/latest"
@@ -457,7 +473,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
             case "name": return instances[row].name
             case "path": return instances[row].path
             case "type": return instances[row].type
-                /* case "status":
+            case "status":
                 let status = instances[row].status
                 switch status {
                 case .Running: return "Running"
@@ -466,7 +482,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
                 case .NotActive: return "Not active"
                 case .Disabled: return "Disabled"
                 }
-                */
+                
             case "url": return AEMInstance.getUrl(instances[row])
             default: break
             }
