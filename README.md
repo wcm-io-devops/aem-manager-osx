@@ -16,7 +16,7 @@ The AEM manager is a Mac OS X application that allows to manage local AEM instan
 Installation
 ------------
 
-* Download the latest release from the [Releases](https://github.com/petermannel/aem-manager-osx/releases) section.
+* Download the latest release from the [Releases](https://github.com/wcm-io-devops/aem-manager-osx/releases) section.
 * Install DMG File to your Applications Folder. The DMG File is not signed, so enable GateKeeper for App-Download from anywhere in your security settings.
 
 Tested with OS X 10.11 El Capitan.
