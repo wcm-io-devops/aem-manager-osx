@@ -160,6 +160,12 @@ class ViewController: NSViewController {
                 
                 menu.addItem(NSMenuItem.separatorItem())
                 
+                let openInstanceFolder = InstanceMenuItem(t: "Open in \"Finder\"", a: "openInstanceFolder2:", k: "",instance: instance)
+                openInstanceFolder.target = self
+                menu.addItem(openInstanceFolder)
+                
+                menu.addItem(NSMenuItem.separatorItem())
+                
                 let eLog = InstanceMenuItem(t: "Error Log", a: "openErrorLog2:", k: "",instance: instance)
                 eLog.target = self
                 menu.addItem(eLog)
@@ -367,6 +373,29 @@ class ViewController: NSViewController {
             openCRXDEFunc(selectedInstance!)
         }
     }
+    
+    @IBAction func openInstanceFolder(sender: NSMenuItem) {
+        if table.selectedRow < 0 {
+            performSegueWithIdentifier("noInstance",sender: self)
+        }else{
+            openInstanceFolderFunc(selectedInstance!)
+        }
+    }
+    
+     func openInstanceFolder2(sender: NSMenuItem) {
+        if table.selectedRow < 0 {
+            performSegueWithIdentifier("noInstance",sender: self)
+        }else{
+            openInstanceFolderFunc(selectedInstance!)
+        }
+    }
+    func openInstanceFolderFunc(instance: AEMInstance){
+        print("Open Instance Folder")
+
+           NSWorkspace.sharedWorkspace().selectFile(instance.path, inFileViewerRootedAtPath: "")
+
+    }
+    
     
     func openCRXDEFunc(instance : AEMInstance) {
         var url = AEMInstance.getUrlWithContextPath(instance)
