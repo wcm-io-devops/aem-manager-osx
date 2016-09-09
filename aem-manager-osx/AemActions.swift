@@ -160,12 +160,16 @@ class AemActions: NSObject {
 
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
             // handle error
-            guard error == nil else { return }
+            if (error != nil){
+                instance.status = BundleStatus.NotActive
+                print(error)
+                return
+            }
             
             if let httpResponse = response as? NSHTTPURLResponse {
                 if httpResponse.statusCode != 200 {
                     print("response was not 200: \(response)")
-                    instance.status = BundleStatus.Starting_Stopping
+                    instance.status = BundleStatus.NotActive
                     return
                 }
                 else
@@ -182,7 +186,7 @@ class AemActions: NSObject {
                         }
                         
                     } catch let error as NSError {
-                        instance.status = BundleStatus.Unknown
+                        instance.status = BundleStatus.NotActive
                         print(error)
                     }
                 }

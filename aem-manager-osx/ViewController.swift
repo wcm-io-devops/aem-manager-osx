@@ -39,18 +39,15 @@ class ViewController: NSViewController {
     
     
     override func viewDidAppear() {
-        checkVersion()
+      checkVersion()
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: "checkStatus", userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(4.0, target: self, selector: #selector(ViewController.checkStatus), userInfo: nil, repeats: true)
         
     }
     
     func checkStatus(){
         for instance in instances {
-            if (instance.status == BundleStatus.Starting_Stopping || instance.status == BundleStatus.Unknown   ||
-                instance.status == BundleStatus.Running ) {
-                    AemActions.checkBundleState(instance)
-            }
+                AemActions.checkBundleState(instance)
         }
         
         table.reloadData()
@@ -67,42 +64,24 @@ class ViewController: NSViewController {
         var tagName: String = ""
         
         let urlPath: String = "https://api.github.com/repos/wcm-io-devops/aem-manager-osx/releases/latest"
-        let url: NSURL = NSURL(string: urlPath)!
-        let request1: NSURLRequest = NSURLRequest(URL: url)
-        let response: AutoreleasingUnsafeMutablePointer<NSURLResponse? >= nil
         
-        do {
-            let dataVal: NSData = try  NSURLConnection.sendSynchronousRequest(request1, returningResponse: response)
-            let jsonResult: NSDictionary = try NSJSONSerialization.JSONObjectWithData(dataVal, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-            tagName = jsonResult["tag_name"] as! String
-            if tagName.hasPrefix("v"){
-                tagName.removeAtIndex(tagName.startIndex)
+        let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: urlPath)!, completionHandler: { (data, response, error) -> Void in
+            do{
+                let  str = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as![String:AnyObject]
                 
+                tagName = str["tag_name"] as! String
+                if tagName.hasPrefix("v"){
+                    tagName.removeAtIndex(tagName.startIndex)
+                    
+                }
+                print("Tagname: \(tagName)")
             }
-            print("Tagname: \(tagName)")
-            
-        } catch (let e) {
-            print(e)
-        }
-        /*
-        let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: "https://api.github.com/repos/wcm-io-devops/aem-manager-osx/releases/latest")!, completionHandler: { (data, response, error) -> Void in
-        do{
-        let  str = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as![String:AnyObject]
-        
-        tagName = str["tag_name"] as! String
-        if tagName.hasPrefix("v"){
-        tagName.removeAtIndex(tagName.startIndex)
-        
-        }
-        print("Tagname: \(tagName)")
-        print(str)
-        }
-        catch {
-        print("json error: \(error)")
-        }
+            catch {
+                print("json error: \(error)")
+            }
         })
         task.resume()
-        */
+        
         print(version)
         if version.versionToInt().lexicographicalCompare(tagName.versionToInt()) {
             performSegueWithIdentifier("versionInfo",sender: self)
@@ -114,7 +93,7 @@ class ViewController: NSViewController {
         table.setDataSource(self)
         table.setDelegate(self)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadTableData:", name: "reload", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.reloadTableData(_:)), name: "reload", object: nil)
         
         for instance in instances{
             if instance.showIcon {
@@ -128,49 +107,49 @@ class ViewController: NSViewController {
                 let menu : NSMenu = NSMenu()
                 menu.autoenablesItems = false
                 
-                let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: "startInstance2:", k: "",instance: instance)
+                let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: #selector(ViewController.startInstance2(_:)), k: "",instance: instance)
                 startInstanceMenuItem.target = self
                 menu.addItem(startInstanceMenuItem)
                 
-                let stopInstanceMenuItem = InstanceMenuItem(t: "Stop Instance", a: "stopInstance2:", k: "",instance: instance)
+                let stopInstanceMenuItem = InstanceMenuItem(t: "Stop Instance", a: #selector(ViewController.stopInstance2(_:)), k: "",instance: instance)
                 stopInstanceMenuItem.target = self
                 menu.addItem(stopInstanceMenuItem)
                 
                 menu.addItem(NSMenuItem.separatorItem())
                 
-                let openAuthorMenuItem = InstanceMenuItem(t: "Open Author/Publish", a: "openAuthor2:", k: "",instance: instance)
+                let openAuthorMenuItem = InstanceMenuItem(t: "Open Author/Publish", a: #selector(ViewController.openAuthor2(_:)), k: "",instance: instance)
                 openAuthorMenuItem.target = self
                 menu.addItem(openAuthorMenuItem)
                 
-                let openCRX = InstanceMenuItem(t: "Open CRX", a: "openCRX2:", k: "",instance: instance)
+                let openCRX = InstanceMenuItem(t: "Open CRX", a: #selector(ViewController.openCRX2(_:)), k: "",instance: instance)
                 openCRX.target = self
                 menu.addItem(openCRX)
                 
-                let openCRXContentExplorer = InstanceMenuItem(t: "Open CRX Content Explorer", a: "openCRXContentExplorer2:", k: "",instance: instance)
+                let openCRXContentExplorer = InstanceMenuItem(t: "Open CRX Content Explorer", a: #selector(ViewController.openCRXContentExplorer2(_:)), k: "",instance: instance)
                 openCRXContentExplorer.target = self
                 menu.addItem(openCRXContentExplorer)
                 
-                let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: "openCRXDE2:", k: "",instance: instance)
+                let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: #selector(ViewController.openCRXDE2(_:)), k: "",instance: instance)
                 openCRXContentExplorer.target = self
                 menu.addItem(openCRXDE)
                 
-                let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: "openFelixConsole2:", k: "",instance: instance)
+                let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: #selector(ViewController.openFelixConsole2(_:)), k: "",instance: instance)
                 openFelixConsole.target = self
                 menu.addItem(openFelixConsole)
                 
                 menu.addItem(NSMenuItem.separatorItem())
                 
-                let openInstanceFolder = InstanceMenuItem(t: "Open in \"Finder\"", a: "openInstanceFolder2:", k: "",instance: instance)
+                let openInstanceFolder = InstanceMenuItem(t: "Open in \"Finder\"", a: #selector(ViewController.openInstanceFolder2(_:)), k: "",instance: instance)
                 openInstanceFolder.target = self
                 menu.addItem(openInstanceFolder)
                 
                 menu.addItem(NSMenuItem.separatorItem())
                 
-                let eLog = InstanceMenuItem(t: "Error Log", a: "openErrorLog2:", k: "",instance: instance)
+                let eLog = InstanceMenuItem(t: "Error Log", a: #selector(ViewController.openErrorLog2(_:)), k: "",instance: instance)
                 eLog.target = self
                 menu.addItem(eLog)
                 
-                let rLog = InstanceMenuItem(t: "Request Log", a: "openRequestLog2:", k: "",instance: instance)
+                let rLog = InstanceMenuItem(t: "Request Log", a: #selector(ViewController.openRequestLog2(_:)), k: "",instance: instance)
                 rLog.target = self
                 menu.addItem(rLog)
                 
@@ -254,10 +233,9 @@ class ViewController: NSViewController {
             
             backgroundThread(background: {
                 AemActions.startInstance(self.selectedInstance!)
-                //NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
+
                 },completion: {
-                    // A function to run in the foreground when the background thread is complete
-                    //   NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
+ 
             })
         }
         
@@ -268,10 +246,8 @@ class ViewController: NSViewController {
         
         backgroundThread(background: {
             AemActions.startInstance(sender.ins)
-            //NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
             },completion: {
-                // A function to run in the foreground when the background thread is complete
-                //   NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
+
         })
     }
     
@@ -382,18 +358,15 @@ class ViewController: NSViewController {
         }
     }
     
-     func openInstanceFolder2(sender: NSMenuItem) {
-        if table.selectedRow < 0 {
-            performSegueWithIdentifier("noInstance",sender: self)
-        }else{
-            openInstanceFolderFunc(selectedInstance!)
-        }
+    func openInstanceFolder2(sender: InstanceMenuItem) {
+        openInstanceFolderFunc(sender.ins)
     }
+    
     func openInstanceFolderFunc(instance: AEMInstance){
         print("Open Instance Folder")
-
-           NSWorkspace.sharedWorkspace().selectFile(instance.path, inFileViewerRootedAtPath: "")
-
+        
+        NSWorkspace.sharedWorkspace().selectFile(instance.path, inFileViewerRootedAtPath: "")
+        
     }
     
     
@@ -527,8 +500,6 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
             
         }
     }
-    
-    
 }
 
 class InstanceMenuItem : NSMenuItem {
