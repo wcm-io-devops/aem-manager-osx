@@ -16,39 +16,7 @@
             startingLineNumber = "181"
             endingLineNumber = "181"
             landmarkName = "checkBundleState(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "aem-manager-osx/ViewController.swift"
-            timestampString = "490301024.83487"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "aem-manager-osx/ViewController.swift"
-            timestampString = "490301024.83487"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -64,7 +32,7 @@
             startingLineNumber = "149"
             endingLineNumber = "149"
             landmarkName = "checkBundleState(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -80,39 +48,7 @@
             startingLineNumber = "163"
             endingLineNumber = "163"
             landmarkName = "checkBundleState(_:)"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static aem_manager_osx.AemActions.(checkBundleState (aem_manager_osx.AEMInstance) -&gt; ()).(closure #1)"
-                  moduleName = "aem-manager-osx"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/peter/develop/git/aem-manager-osx/aem-manager-osx/AemActions.swift"
-                  timestampString = "490299405.911639"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "165"
-                  endingLineNumber = "165"
-                  offsetFromSymbolStart = "27">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static aem_manager_osx.AemActions.(checkBundleState (aem_manager_osx.AEMInstance) -&gt; ()).(closure #1)"
-                  moduleName = "aem-manager-osx"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/peter/develop/git/aem-manager-osx/aem-manager-osx/AemActions.swift"
-                  timestampString = "490299405.911807"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "165"
-                  endingLineNumber = "165"
-                  offsetFromSymbolStart = "243">
-               </Location>
-            </Locations>
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -128,7 +64,7 @@
             startingLineNumber = "170"
             endingLineNumber = "170"
             landmarkName = "checkBundleState(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -144,7 +80,7 @@
             startingLineNumber = "177"
             endingLineNumber = "177"
             landmarkName = "checkBundleState(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -160,7 +96,55 @@
             startingLineNumber = "180"
             endingLineNumber = "180"
             landmarkName = "checkBundleState(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "aem-manager-osx/ViewController.swift"
+            timestampString = "495657960.859831"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "backgroundThread(_:background:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "aem_manager_osx.ViewController.backgroundThread (Swift.Double, background : Swift.Optional&lt;() -&gt; ()&gt;, completion : Swift.Optional&lt;() -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "aem-manager-osx"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/peter/develop/git/aem-manager-osx/aem-manager-osx/ViewController.swift"
+                  timestampString = "495744652.128626"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "aem_manager_osx.ViewController.(backgroundThread (Swift.Double, background : Swift.Optional&lt;() -&gt; ()&gt;, completion : Swift.Optional&lt;() -&gt; ()&gt;) -&gt; ()).(closure #1)"
+                  moduleName = "aem-manager-osx"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/peter/develop/git/aem-manager-osx/aem-manager-osx/ViewController.swift"
+                  timestampString = "495744652.130448"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

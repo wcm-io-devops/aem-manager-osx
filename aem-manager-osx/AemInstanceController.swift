@@ -90,7 +90,7 @@ class AemInstanceController: NSViewController {
     
     
     // MARK: actions
-    @IBAction func openJarFileDialog(sender: NSButton) {
+    @IBAction func openJarFileDialog(_ sender: NSButton) {
         let openFile = NSOpenPanel()
         openFile.title = "Open File"
         openFile.prompt = "Open"
@@ -101,12 +101,12 @@ class AemInstanceController: NSViewController {
         openFile.canCreateDirectories = true
         openFile.resolvesAliases = true
         openFile.runModal()
-        if let url = openFile.URL, fname = url.path {
-            jarFileField.stringValue = fname
+        if let url = openFile.url{
+            jarFileField.stringValue = url.path
         }
     }
     
-    @IBAction func openJavaExecDialog(sender: NSButton) {
+    @IBAction func openJavaExecDialog(_ sender: NSButton) {
         let openFile = NSOpenPanel()
         openFile.title = "Open File"
         openFile.prompt = "Open"
@@ -117,17 +117,17 @@ class AemInstanceController: NSViewController {
         openFile.canCreateDirectories = true
         openFile.resolvesAliases = true
         openFile.runModal()
-        if let url = openFile.URL, fname = url.path {
-            javaExecField.stringValue = fname
+        if let url = openFile.url {
+            javaExecField.stringValue = url.path
         }
         
     }
     
-    @IBAction func cancel(sender: NSButton) {
+    @IBAction func cancel(_ sender: NSButton) {
         view.window?.close()
     }
     
-    @IBAction func save(sender: AnyObject) {
+    @IBAction func save(_ sender: AnyObject) {
         aeminstance!.name = nameField.stringValue
         aeminstance!.hostName = hostnameField.stringValue
         aeminstance!.contextPath = contextPathFiled.stringValue
@@ -159,7 +159,7 @@ class AemInstanceController: NSViewController {
         if AEMInstance.validate(aeminstance!){
             
             if instances.contains(aeminstance!){
-                instances.removeAtIndex(instances.indexOf(aeminstance!)!)
+                instances.remove(at: instances.index(of: aeminstance!)!)
             }
             
             instances.append(aeminstance!)
@@ -167,19 +167,19 @@ class AemInstanceController: NSViewController {
             print("Saving Instance to db with name:\(aeminstance!.name) and id: \(aeminstance?.id)")
             AEMInstance.save(instances)
             
-            NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "reload"), object: nil)
             
             view.window?.close()
             
         }
         else{
             // show message
-            performSegueWithIdentifier("error",sender: self)
+            performSegue(withIdentifier: "error",sender: self)
             
         }
     }
     
-    @IBAction func showIcon(sender: NSButton) {
+    @IBAction func showIcon(_ sender: NSButton) {
         if sender.state == NSOnState {
             aeminstance!.showIcon = true
         }else {
@@ -187,7 +187,7 @@ class AemInstanceController: NSViewController {
         }
     }
     
-    @IBAction func showProcessOnStartup(sender: NSButton) {
+    @IBAction func showProcessOnStartup(_ sender: NSButton) {
         if sender.state == NSOnState{
             aeminstance!.showProcess = true
         }else{
@@ -195,7 +195,7 @@ class AemInstanceController: NSViewController {
         }
     }
     
-    @IBAction func openBrowser(sender: NSButton) {
+    @IBAction func openBrowser(_ sender: NSButton) {
         if sender.state == NSOnState{
             aeminstance!.openBrowser = true
         }else{
@@ -203,7 +203,7 @@ class AemInstanceController: NSViewController {
         }
     }
     
-    @IBAction func changeRunMode(sender: NSButton) {
+    @IBAction func changeRunMode(_ sender: NSButton) {
         if sender === authorRadioButton{
             aeminstance!.runMode = RunMode.Author
         }else
@@ -212,7 +212,7 @@ class AemInstanceController: NSViewController {
         }
     }
     
-    @IBAction func enableJVMDebugging(sender: NSButton) {
+    @IBAction func enableJVMDebugging(_ sender: NSButton) {
         if sender.state == NSOnState{
             aeminstance!.jVMDebug = true
         }else{
@@ -220,7 +220,7 @@ class AemInstanceController: NSViewController {
         }
     }
     
-    @IBAction func enableJProfilerSupport(sender: NSButton) {
+    @IBAction func enableJProfilerSupport(_ sender: NSButton) {
         if sender.state == NSOnState{
             aeminstance!.jProfiler = true
         }else{
@@ -228,14 +228,14 @@ class AemInstanceController: NSViewController {
         }
     }
     
-    @IBAction func enableJConsoleSupport(sender: NSButton) {
+    @IBAction func enableJConsoleSupport(_ sender: NSButton) {
         if sender.state == NSOnState{
             aeminstance!.jConsole = true
         }else{
             aeminstance!.jConsole = false
         }
     }
-    @IBAction func enableCustomJVMSettings(sender: NSButton) {
+    @IBAction func enableCustomJVMSettings(_ sender: NSButton) {
         
         if sender.state == NSOnState{
             aeminstance!.customJVMArgsActive = true
@@ -243,7 +243,7 @@ class AemInstanceController: NSViewController {
             aeminstance!.customJVMArgsActive = false
         }
     }
-    @IBAction func enableSampleContent(sender: NSButton) {
+    @IBAction func enableSampleContent(_ sender: NSButton) {
         if sender.state == NSOnState{
             aeminstance!.runModeSampleContent = true
         }else{
@@ -257,7 +257,7 @@ class AemInstanceController: NSViewController {
     }
     override func viewWillAppear() {
         super.viewWillAppear()
-        typeComboBox.selectItemAtIndex(0)
+        typeComboBox.selectItem(at: 0)
     }
     
 }

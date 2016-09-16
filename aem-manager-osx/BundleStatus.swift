@@ -9,10 +9,10 @@
 import Foundation
 
 enum BundleStatus {
-    case Starting_Stopping
-    case Running
-    case Unknown
-    case Disabled
-    case NotActive
+    case starting_Stopping
+    case running
+    case unknown
+    case disabled
+    case notActive
     
 }

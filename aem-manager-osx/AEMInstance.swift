@@ -19,13 +19,13 @@ class AEMInstance: NSObject, NSCoding {
     static let defaultJConsolePort = 9999
     static let defaultType = "AEM 5.5, 6.0 or higher"
     
-    let id = NSUUID().UUIDString
+    let id = UUID().uuidString
     var name: String = ""
     var path: String = ""
     
     var type: String = defaultType
     // ?
-    var status: BundleStatus = BundleStatus.NotActive
+    var status: BundleStatus = BundleStatus.notActive
     
     var hostName = "localhost"
     var port =  defaultPort
@@ -51,7 +51,7 @@ class AEMInstance: NSObject, NSCoding {
     var showProcess = false
     var openBrowser = false
     
-    static func save(instance: [AEMInstance]) -> Bool {
+    static func save(_ instance: [AEMInstance]) -> Bool {
         if let path = getPath(){
             NSKeyedArchiver.archiveRootObject(instance, toFile: path)
             return true
@@ -62,7 +62,7 @@ class AEMInstance: NSObject, NSCoding {
     static func loadAEMInstances() -> [AEMInstance]{
         
         if let path = getPath(){
-            if let instances = NSKeyedUnarchiver.unarchiveObjectWithFile(path) as? [AEMInstance]{
+            if let instances = NSKeyedUnarchiver.unarchiveObject(withFile: path) as? [AEMInstance]{
                 return instances
             }
         }
@@ -70,7 +70,7 @@ class AEMInstance: NSObject, NSCoding {
         
     }
     
-    static func validate(instance : AEMInstance) -> Bool {
+    static func validate(_ instance : AEMInstance) -> Bool {
         if instance.name.isEmpty ||  instance.path.isEmpty || instance.hostName.isEmpty || instance.port <= 0 {
             return false;
         }
@@ -78,7 +78,7 @@ class AEMInstance: NSObject, NSCoding {
         return true
     }
     
-    override func isEqual(object: AnyObject?) -> Bool {
+    override func isEqual(_ object: Any?) -> Bool {
         if let c = object as? AEMInstance {
             return c.id == self.id
         }
@@ -89,23 +89,23 @@ class AEMInstance: NSObject, NSCoding {
         return id.hashValue
     }
     
-    static func getUrl(instance: AEMInstance) -> String{
+    static func getUrl(_ instance: AEMInstance) -> String{
         return "http://\(instance.hostName):\(instance.port)"
     }
     
-    static func getUrlWithContextPath(instance: AEMInstance) -> String{
+    static func getUrlWithContextPath(_ instance: AEMInstance) -> String{
         var url =  getUrl(instance)
         if !instance.contextPath.isEmpty{
-            url.appendContentsOf(instance.contextPath)
+            url.append(instance.contextPath)
         }
         
         return url
     }
     
-    static func getLogBaseFolder(instance: AEMInstance) -> String{
-        var path = NSString(string: instance.path).stringByDeletingLastPathComponent
+    static func getLogBaseFolder(_ instance: AEMInstance) -> String{
+        var path = NSString(string: instance.path).deletingLastPathComponent
         
-        path.appendContentsOf("/crx-quickstart/logs/")
+        path.append("/crx-quickstart/logs/")
         
         return path
         
@@ -114,78 +114,78 @@ class AEMInstance: NSObject, NSCoding {
     // MARK: NSCoding
     required convenience init(coder decoder: NSCoder) {
         self.init()
-        self.name = decoder.decodeObjectForKey("id") as! String
-        self.name = decoder.decodeObjectForKey("name") as! String
-        self.type = decoder.decodeObjectForKey("type") as! String
-        self.path = decoder.decodeObjectForKey("path") as! String
+        self.name = decoder.decodeObject(forKey: "id") as! String
+        self.name = decoder.decodeObject(forKey: "name") as! String
+        self.type = decoder.decodeObject(forKey: "type") as! String
+        self.path = decoder.decodeObject(forKey: "path") as! String
         
-        self.hostName = decoder.decodeObjectForKey("hostName") as! String
-        self.contextPath = decoder.decodeObjectForKey("contextPath") as! String
-        self.javaExecutable = decoder.decodeObjectForKey("javaExecutable") as! String
-        self.userName = decoder.decodeObjectForKey("userName") as! String
-        self.password = decoder.decodeObjectForKey("password") as! String
-        self.runMode = RunMode(rawValue: decoder.decodeObjectForKey("runMode") as! String)
-        self.runModeSampleContent = decoder.decodeBoolForKey("runModeSampleContent")
+        self.hostName = decoder.decodeObject(forKey: "hostName") as! String
+        self.contextPath = decoder.decodeObject(forKey: "contextPath") as! String
+        self.javaExecutable = decoder.decodeObject(forKey: "javaExecutable") as! String
+        self.userName = decoder.decodeObject(forKey: "userName") as! String
+        self.password = decoder.decodeObject(forKey: "password") as! String
+        self.runMode = RunMode(rawValue: decoder.decodeObject(forKey: "runMode") as! String)
+        self.runModeSampleContent = decoder.decodeBool(forKey: "runModeSampleContent")
         
-        self.port = decoder.decodeIntegerForKey("port")
-        self.heapMinSizeMB = decoder.decodeIntegerForKey("heapMinSizeMB")
-        self.heapMaxSizeMB = decoder.decodeIntegerForKey("heapMaxSizeMB")
-        self.maxPermSizeMB = decoder.decodeIntegerForKey("maxPermSizeMB")
+        self.port = decoder.decodeInteger(forKey: "port")
+        self.heapMinSizeMB = decoder.decodeInteger(forKey: "heapMinSizeMB")
+        self.heapMaxSizeMB = decoder.decodeInteger(forKey: "heapMaxSizeMB")
+        self.maxPermSizeMB = decoder.decodeInteger(forKey: "maxPermSizeMB")
         
-        self.jVMDebug = decoder.decodeBoolForKey("jVMDebug")
-        self.jConsole = decoder.decodeBoolForKey("jConsole")
-        self.jProfiler = decoder.decodeBoolForKey("jProfiler")
-        self.customJVMArgsActive = decoder.decodeBoolForKey("customJVMArgsActive")
+        self.jVMDebug = decoder.decodeBool(forKey: "jVMDebug")
+        self.jConsole = decoder.decodeBool(forKey: "jConsole")
+        self.jProfiler = decoder.decodeBool(forKey: "jProfiler")
+        self.customJVMArgsActive = decoder.decodeBool(forKey: "customJVMArgsActive")
         
-        self.jVMDebugPort = decoder.decodeIntegerForKey("jVMDebugPort")
-        self.jConsolePort = decoder.decodeIntegerForKey("jConsolePort")
-        self.jProfilerPort = decoder.decodeIntegerForKey("ProfilerPort")
-        self.customJVMArgs = decoder.decodeObjectForKey("customJVMArgs") as! String
+        self.jVMDebugPort = decoder.decodeInteger(forKey: "jVMDebugPort")
+        self.jConsolePort = decoder.decodeInteger(forKey: "jConsolePort")
+        self.jProfilerPort = decoder.decodeInteger(forKey: "ProfilerPort")
+        self.customJVMArgs = decoder.decodeObject(forKey: "customJVMArgs") as! String
         
-        self.showIcon = decoder.decodeBoolForKey("showIcon")
-        self.showProcess = decoder.decodeBoolForKey("showProcess")
-        self.openBrowser = decoder.decodeBoolForKey("openBrowser")
-        self.icon = decoder.decodeObjectForKey("icon") as! String
+        self.showIcon = decoder.decodeBool(forKey: "showIcon")
+        self.showProcess = decoder.decodeBool(forKey: "showProcess")
+        self.openBrowser = decoder.decodeBool(forKey: "openBrowser")
+        self.icon = decoder.decodeObject(forKey: "icon") as! String
         
         
     }
-    func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.name, forKey: "id")
-        coder.encodeObject(self.name, forKey: "name")
-        coder.encodeObject(self.type, forKey: "type")
-        coder.encodeObject(self.path, forKey: "path")
-        coder.encodeObject(self.hostName, forKey: "hostName")
-        coder.encodeObject(self.contextPath, forKey: "contextPath")
-        coder.encodeObject(self.javaExecutable, forKey: "javaExecutable")
-        coder.encodeObject(self.userName, forKey: "userName")
-        coder.encodeObject(self.password, forKey: "password")
-        coder.encodeObject(self.runMode.rawValue, forKey: "runMode")
-        coder.encodeBool(self.runModeSampleContent, forKey: "runModeSampleContent")
+    func encode(with coder: NSCoder) {
+        coder.encode(self.name, forKey: "id")
+        coder.encode(self.name, forKey: "name")
+        coder.encode(self.type, forKey: "type")
+        coder.encode(self.path, forKey: "path")
+        coder.encode(self.hostName, forKey: "hostName")
+        coder.encode(self.contextPath, forKey: "contextPath")
+        coder.encode(self.javaExecutable, forKey: "javaExecutable")
+        coder.encode(self.userName, forKey: "userName")
+        coder.encode(self.password, forKey: "password")
+        coder.encode(self.runMode.rawValue, forKey: "runMode")
+        coder.encode(self.runModeSampleContent, forKey: "runModeSampleContent")
         
-        coder.encodeInteger(self.port, forKey: "port")
-        coder.encodeInteger(self.heapMinSizeMB, forKey: "heapMinSizeMB")
-        coder.encodeInteger(self.heapMaxSizeMB, forKey: "heapMaxSizeMB")
-        coder.encodeInteger(self.maxPermSizeMB, forKey: "maxPermSizeMB")
+        coder.encode(self.port, forKey: "port")
+        coder.encode(self.heapMinSizeMB, forKey: "heapMinSizeMB")
+        coder.encode(self.heapMaxSizeMB, forKey: "heapMaxSizeMB")
+        coder.encode(self.maxPermSizeMB, forKey: "maxPermSizeMB")
         
-        coder.encodeBool(self.jVMDebug, forKey: "jVMDebug")
-        coder.encodeBool(self.jConsole, forKey: "jConsole")
-        coder.encodeBool(self.jProfiler, forKey: "jProfiler")
-        coder.encodeBool(self.customJVMArgsActive, forKey: "customJVMArgsActive")
+        coder.encode(self.jVMDebug, forKey: "jVMDebug")
+        coder.encode(self.jConsole, forKey: "jConsole")
+        coder.encode(self.jProfiler, forKey: "jProfiler")
+        coder.encode(self.customJVMArgsActive, forKey: "customJVMArgsActive")
         
-        coder.encodeInteger(self.jVMDebugPort, forKey: "jVMDebugPort")
-        coder.encodeInteger(self.jConsolePort, forKey: "jConsolePort")
-        coder.encodeInteger(self.jProfilerPort, forKey: "ProfilerPort")
-        coder.encodeObject(self.customJVMArgs, forKey: "customJVMArgs")
+        coder.encode(self.jVMDebugPort, forKey: "jVMDebugPort")
+        coder.encode(self.jConsolePort, forKey: "jConsolePort")
+        coder.encode(self.jProfilerPort, forKey: "ProfilerPort")
+        coder.encode(self.customJVMArgs, forKey: "customJVMArgs")
         
-        coder.encodeBool(self.showIcon, forKey: "showIcon")
-        coder.encodeBool(self.showProcess, forKey: "showProcess")
-        coder.encodeBool(self.openBrowser, forKey: "openBrowser")
-        coder.encodeObject(self.icon, forKey: "icon")
+        coder.encode(self.showIcon, forKey: "showIcon")
+        coder.encode(self.showProcess, forKey: "showProcess")
+        coder.encode(self.openBrowser, forKey: "openBrowser")
+        coder.encode(self.icon, forKey: "icon")
         
     }
     
-    private static func getPath() -> String? {
-        let pfd = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+    fileprivate static func getPath() -> String? {
+        let pfd = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         if let path = pfd.first {
             return path + "/.aeminstances.bin"
         }else {

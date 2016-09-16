@@ -11,7 +11,7 @@ import Foundation
 class AemActions: NSObject {
     
     
-    static func buildCommandLineArguments(instance: AEMInstance) -> [String] {
+    static func buildCommandLineArguments(_ instance: AEMInstance) -> [String] {
         var javaArgs = [String]()
         var jarArgs = [String]()
         var args = [String]()
@@ -26,7 +26,7 @@ class AemActions: NSObject {
         }else{
             javaArgs.append("-D-crx.quickstart.server.port=\(instance.port)")
         }
-        let runModes = instance.runMode.rawValue.lowercaseString + "," + ((instance.runModeSampleContent) ? "samplecontent" : "nosamplecontent")
+        let runModes = instance.runMode.rawValue.lowercased() + "," + ((instance.runModeSampleContent) ? "samplecontent" : "nosamplecontent")
         // rummodes
         if instance.type == AEMInstance.defaultType{
             jarArgs.append("-r\(runModes)")
@@ -83,26 +83,26 @@ class AemActions: NSObject {
         return args
     }
     
-    static func startInstance(instance: AEMInstance) -> String {
+    static func startInstance(_ instance: AEMInstance) -> String {
         
-        if instance.status == BundleStatus.Running || instance.status == BundleStatus.Starting_Stopping || instance.status == BundleStatus.Unknown {
+        if instance.status == BundleStatus.running || instance.status == BundleStatus.starting_Stopping || instance.status == BundleStatus.unknown {
             return "Instance already started!"
         }
         
-        let task = NSTask()
+        let task = Process()
         task.launchPath = instance.javaExecutable
         task.arguments = buildCommandLineArguments(instance)
         print("Arguments:\(task.arguments!)")
-        let pipe = NSPipe()
+        let pipe = Pipe()
         task.standardOutput = pipe
         task.launch()
-        instance.status = BundleStatus.Starting_Stopping
+        instance.status = BundleStatus.starting_Stopping
         task.waitUntilExit()
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: NSUTF8StringEncoding)!
+        let output = String(data: data, encoding: String.Encoding.utf8)!
         if output.characters.count > 0 {
-            return output.substringToIndex(output.endIndex.advancedBy(-1))
+            return output.substring(to: output.characters.index(output.endIndex, offsetBy: -1))
             
         }
         print(output)
@@ -113,80 +113,80 @@ class AemActions: NSObject {
     }
     
     
-    static func stopInstance(instance: AEMInstance) {
+    static func stopInstance(_ instance: AEMInstance) {
         
         let PasswordString = "\(instance.userName):\(instance.password)"
-        let PasswordData = PasswordString.dataUsingEncoding(NSUTF8StringEncoding)
-        let base64EncodedCredential = PasswordData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+        let PasswordData = PasswordString.data(using: String.Encoding.utf8)
+        let base64EncodedCredential = PasswordData!.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
         var stopUrl = AEMInstance.getUrlWithContextPath(instance)
-        stopUrl.appendContentsOf("/system/console/vmstat?shutdown_type=Stop")
+        stopUrl.append("/system/console/vmstat?shutdown_type=Stop")
         if instance.type != AEMInstance.defaultType {
             stopUrl = AEMInstance.getUrl(instance)
-            stopUrl.appendContentsOf("/admin/shutdown")
+            stopUrl.append("/admin/shutdown")
         }
         
-        let request = NSMutableURLRequest(URL: NSURL(string: stopUrl)!)
-        let session = NSURLSession.sharedSession()
+        var request = URLRequest(url: URL(string: stopUrl)!)
+        let session = URLSession.shared
         request.setValue("Basic \(base64EncodedCredential)", forHTTPHeaderField: "Authorization")
-        request.HTTPMethod = "POST"
+        request.httpMethod = "POST"
         
         
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             // handle error
             guard error == nil else { return }
             
             print("Response: \(response)")
             
         })
-        instance.status = BundleStatus.NotActive
+        instance.status = BundleStatus.notActive
         task.resume()
         
         
     }
     
-    static func checkBundleState(instance: AEMInstance) {
+    static func checkBundleState(_ instance: AEMInstance) {
         
         let PasswordString = "\(instance.userName):\(instance.password)"
-        let PasswordData = PasswordString.dataUsingEncoding(NSUTF8StringEncoding)
-        let base64EncodedCredential = PasswordData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+        let PasswordData = PasswordString.data(using: String.Encoding.utf8)
+        let base64EncodedCredential = PasswordData!.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
         var felixUrl = AEMInstance.getUrlWithContextPath(instance)
-        felixUrl.appendContentsOf("/system/console/bundles/.json")
+        felixUrl.append("/system/console/bundles/.json")
         
-        let request = NSMutableURLRequest(URL: NSURL(string: felixUrl)!)
+        var request = URLRequest(url: URL(string: felixUrl)!)
         //request.timeoutInterval = (number as! NSTimeInterval)
-        let session = NSURLSession.sharedSession()
+        let session = URLSession.shared
         request.setValue("Basic \(base64EncodedCredential)", forHTTPHeaderField: "Authorization")
-        request.HTTPMethod = "GET"
+        request.httpMethod = "GET"
 
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             // handle error
             if (error != nil){
-                instance.status = BundleStatus.NotActive
+                instance.status = BundleStatus.notActive
                 print(error)
                 return
             }
             
-            if let httpResponse = response as? NSHTTPURLResponse {
+            if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode != 200 {
                     print("response was not 200: \(response)")
-                    instance.status = BundleStatus.NotActive
+                    instance.status = BundleStatus.notActive
                     return
                 }
                 else
                 {
                     do {
-                        let jsonResult: NSDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                        let jsonResult: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                         
                         let status = jsonResult["status"] as! String
                         print("Status: \(status)")
-                        if status.containsString("resolved")  || status.containsString("installed"){
-                            instance.status = BundleStatus.Starting_Stopping
+                        if status.contains("resolved")  || status.contains("installed"){
+                            instance.status = BundleStatus.starting_Stopping
                         }else{
-                            instance.status = BundleStatus.Running
+                            instance.status = BundleStatus.running
                         }
                         
                     } catch let error as NSError {
-                        instance.status = BundleStatus.NotActive
+                        instance.status = BundleStatus.notActive
                         print(error)
                     }
                 }
