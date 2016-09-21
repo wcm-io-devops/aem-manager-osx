@@ -23,7 +23,8 @@ class ViewController: NSViewController {
     var items: [NSStatusItem] = []
     
     var timer = Timer()
-    
+    var timer2 = Timer()
+    var tagName: String = ""
     
     func backgroundThread(_ delay: Double = 0.0, background: (() -> Void)? = nil, completion: (() -> Void)? = nil) {
         DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
@@ -43,6 +44,8 @@ class ViewController: NSViewController {
         
         timer = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(ViewController.checkStatus), userInfo: nil, repeats: true)
         
+        timer2 = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(ViewController.checkVersion), userInfo: nil, repeats: false)
+        
     }
     
     func checkStatus(){
@@ -55,13 +58,12 @@ class ViewController: NSViewController {
     
     @IBAction func checkVersionUpdate(_ sender: NSMenuItem){
         checkVersion()
+
     }
     
     func checkVersion(){
         let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
         let version = nsObject as! String
-        
-        var tagName: String = ""
         
         let urlPath: String = "https://api.github.com/repos/wcm-io-devops/aem-manager-osx/releases/latest"
         
@@ -69,12 +71,13 @@ class ViewController: NSViewController {
             do{
                 let  str = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as![String:AnyObject]
                 
-                tagName = str["tag_name"] as! String
-                if tagName.hasPrefix("v"){
-                    tagName.remove(at: tagName.startIndex)
+                self.tagName = str["tag_name"] as! String
+                if self.tagName.hasPrefix("v"){
+                    self.tagName.remove(at: self.tagName.startIndex)
                     
                 }
-                print("Tagname: \(tagName)")
+                print("Tagname: \(self.tagName)")
+      
             }
             catch {
                 print("json error: \(error)")
@@ -82,7 +85,9 @@ class ViewController: NSViewController {
         })
         task.resume()
         
-        print(version)
+        print("ALL: \(version) : \(tagName)")
+
+        
         if version.versionToInt().lexicographicallyPrecedes(tagName.versionToInt()) {
             performSegue(withIdentifier: "versionInfo",sender: self)
         }
