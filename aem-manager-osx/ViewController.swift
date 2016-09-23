@@ -40,7 +40,7 @@ class ViewController: NSViewController {
     
     
     override func viewDidAppear() {
-      checkVersion()
+        checkVersion()
         
         timer = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(ViewController.checkStatus), userInfo: nil, repeats: true)
         
@@ -50,7 +50,7 @@ class ViewController: NSViewController {
     
     func checkStatus(){
         for instance in instances {
-                AemActions.checkBundleState(instance)
+            AemActions.checkBundleState(instance)
         }
         
         table.reloadData()
@@ -58,7 +58,7 @@ class ViewController: NSViewController {
     
     @IBAction func checkVersionUpdate(_ sender: NSMenuItem){
         checkVersion()
-
+        
     }
     
     func checkVersion(){
@@ -77,7 +77,7 @@ class ViewController: NSViewController {
                     
                 }
                 print("Tagname: \(self.tagName)")
-      
+                
             }
             catch {
                 print("json error: \(error)")
@@ -86,7 +86,7 @@ class ViewController: NSViewController {
         task.resume()
         
         print("ALL: \(version) : \(tagName)")
-
+        
         
         if version.versionToInt().lexicographicallyPrecedes(tagName.versionToInt()) {
             performSegue(withIdentifier: "versionInfo",sender: self)
@@ -238,9 +238,9 @@ class ViewController: NSViewController {
             
             backgroundThread(background: {
                 AemActions.startInstance(self.selectedInstance!)
-
+                
                 },completion: {
- 
+                    
             })
         }
         
@@ -252,7 +252,7 @@ class ViewController: NSViewController {
         backgroundThread(background: {
             AemActions.startInstance(sender.ins)
             },completion: {
-
+                
         })
     }
     
@@ -520,7 +520,7 @@ class InstanceMenuItem : NSMenuItem {
         fatalError("init(coder:) has not been implemented")
     }
     
- 
+    
 }
 
 extension String {

@@ -157,7 +157,7 @@ class AemActions: NSObject {
         let session = URLSession.shared
         request.setValue("Basic \(base64EncodedCredential)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
-
+        
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             // handle error
             if (error != nil){
