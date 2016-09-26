@@ -24,7 +24,7 @@ class AEMInstance: NSObject, NSCoding {
     var path: String = ""
     
     var type: String = defaultType
-    // ?
+
     var status: BundleStatus = BundleStatus.notActive
     
     var hostName = "localhost"
@@ -149,6 +149,7 @@ class AEMInstance: NSObject, NSCoding {
         
         
     }
+    
     func encode(with coder: NSCoder) {
         coder.encode(self.name, forKey: "id")
         coder.encode(self.name, forKey: "name")

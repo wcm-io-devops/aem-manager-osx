@@ -15,10 +15,8 @@ class ViewController: NSViewController {
     
     
     var instances = AEMInstance.loadAEMInstances()
-    var selectedInstance: AEMInstance?
-    
-    var menuInstance: AEMInstance?
-    
+    weak var selectedInstance: AEMInstance?
+
     var guiarray:[NSWindowController] = []
     var items: [NSStatusItem] = []
     
@@ -36,8 +34,6 @@ class ViewController: NSViewController {
             }
         }
     }
-    
-    
     
     override func viewDidAppear() {
         checkVersion()
@@ -220,11 +216,11 @@ class ViewController: NSViewController {
         }else{
             if instances.contains(selectedInstance!){
                 instances.remove(at: instances.index(of: selectedInstance!)!)
-                
-                print("Deleting Instance with name:\(selectedInstance!.name) and id: \(selectedInstance?.id)")
+
                 AEMInstance.save(instances)
                 
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "reload"), object: nil)
+
             }
         }
         
@@ -255,7 +251,6 @@ class ViewController: NSViewController {
                 
         })
     }
-    
     
     
     @IBAction func stopInstance(_ sender: NSMenuItem) {
@@ -300,6 +295,7 @@ class ViewController: NSViewController {
             
         }
     }
+    
     func openCRX2(_ sender: InstanceMenuItem) {
         
         print("Open CRX")
@@ -307,6 +303,7 @@ class ViewController: NSViewController {
         
         
     }
+    
     func openFuncCRX(_ instace: AEMInstance){
         var url = AEMInstance.getUrlWithContextPath(selectedInstance!)
         url.append("/crx/explorer/")
@@ -328,6 +325,7 @@ class ViewController: NSViewController {
             
         }
     }
+    
     func openCRXContentExplorer2(_ sender: InstanceMenuItem) {
         
         openCRXContentExplorerFunc(sender.ins)

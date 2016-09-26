@@ -15,11 +15,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var items: [NSStatusItem] = []
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+        // Nothing to do
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        // Nothing to do
     }
     
     
