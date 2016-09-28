@@ -19,8 +19,11 @@ Installation
 * Download the latest release from the [Releases](https://github.com/wcm-io-devops/aem-manager-osx/releases) section.
 * Install DMG File to your Applications Folder. The DMG File is not signed, so enable GateKeeper for App-Download from anywhere in your security settings.
 
-Relase v0.1.5 tested with OS X 10.11 El Capitan 
-Release v0.1.6 tested with MacOS Sierra.
+*  In case  of Problems  especially  with MacOS  Versions  <  10.12  installing  Release  Versions <  0.1.6 may help.
+
+Relase 0.1.5 tested with OS X 10.11 El Capitan 
+
+Release 0.1.6 tested with MacOS 10.12 Sierra.
 
 
 Features
