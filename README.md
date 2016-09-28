@@ -10,7 +10,7 @@ https://github.com/wcm-io-devops/aem-manager
 Overview
 ---------
 
-The AEM manager is a MacOS Siera application that allows to manage local AEM instances for AEM developers. It allows to start, stop instances in the menubar. Via menubar quick links are available to the most important entry points.
+The AEM manager is a MacOS Sierra application that allows to manage local AEM instances for AEM developers. It allows to start, stop instances in the menubar. Via menubar quick links are available to the most important entry points.
 
 
 Installation
