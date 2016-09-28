@@ -1,7 +1,7 @@
-wcm.io AEM Manager for Mac OS X
+wcm.io AEM Manager for MacOS  Sierra
 ===============================
 
-Taskbar application for managing AEM instances on Mac OS X.
+Taskbar application for managing AEM instances on MacOS Sierra.
 
 There is also a version for Windows:
 https://github.com/wcm-io-devops/aem-manager
@@ -10,7 +10,7 @@ https://github.com/wcm-io-devops/aem-manager
 Overview
 ---------
 
-The AEM manager is a Mac OS X application that allows to manage local AEM instances for AEM developers. It allows to start, stop instances in the menubar. Via menubar quick links are available to the most important entry points.
+The AEM manager is a MacOS Siera application that allows to manage local AEM instances for AEM developers. It allows to start, stop instances in the menubar. Via menubar quick links are available to the most important entry points.
 
 
 Installation
@@ -19,7 +19,8 @@ Installation
 * Download the latest release from the [Releases](https://github.com/wcm-io-devops/aem-manager-osx/releases) section.
 * Install DMG File to your Applications Folder. The DMG File is not signed, so enable GateKeeper for App-Download from anywhere in your security settings.
 
-Tested with OS X 10.11 El Capitan.
+Relase v0.1.5 tested with OS X 10.11 El Capitan 
+Release v0.1.6 tested with MacOS Sierra.
 
 
 Features
