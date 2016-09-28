@@ -51,6 +51,10 @@ Known Bugs
 * No JProfiler Support
 * Some java args seems not supported by NSTask()
 
+Dev  Notes
+----------
+Master Branch  works only  with  latest XCode 8 Version
+
 
 Issue Tracking
 --------------
