@@ -43,7 +43,7 @@ The main menubar icon offers a context menu with some global useful links, and t
 
 For each instance icon a context menu offers to start/stop the instance, open log files or open a browser to jump into different entry points:
 
-![AEM Instance Context Menu](/images/aem-instance-context-menu.png)
+
 
 Known Bugs
 ----------
