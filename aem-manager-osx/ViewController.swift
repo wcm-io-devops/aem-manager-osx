@@ -126,12 +126,8 @@ class ViewController: NSViewController {
                 openCRX.target = self
                 menu.addItem(openCRX)
                 
-                let openCRXContentExplorer = InstanceMenuItem(t: "Open CRX Content Explorer", a: #selector(ViewController.openCRXContentExplorer2(_:)), k: "",instance: instance)
-                openCRXContentExplorer.target = self
-                menu.addItem(openCRXContentExplorer)
-                
                 let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: #selector(ViewController.openCRXDE2(_:)), k: "",instance: instance)
-                openCRXContentExplorer.target = self
+                openCRXDE.target = self
                 menu.addItem(openCRXDE)
                 
                 let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: #selector(ViewController.openFelixConsole2(_:)), k: "",instance: instance)
@@ -324,34 +320,6 @@ class ViewController: NSViewController {
         }
     }
     
-    @IBAction func openCRXContentExplorer(_ sender: NSMenuItem) {
-        
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: "noInstance",sender: self)
-        }else{
-            openCRXContentExplorerFunc(selectedInstance!)
-            
-        }
-    }
-    
-    func openCRXContentExplorer2(_ sender: InstanceMenuItem) {
-        
-        openCRXContentExplorerFunc(sender.ins)
-        
-    }
-    
-    func openCRXContentExplorerFunc(_ instance: AEMInstance) {
-        print("Open CRX Content Explorer")
-        var url = AEMInstance.getUrlWithContextPath(instance)
-        url.append("/crx/explorer/browser/")
-        if(selectedInstance?.type != AEMInstance.defaultType){
-            url = AEMInstance.getUrl(instance)
-            url.append("/crx/browser/index.jsp")
-        }
-        if let openUrl = URL(string:url){
-            NSWorkspace.shared().open(openUrl)
-        }
-    }
     
     @IBAction func openCRXDE(_ sender: NSMenuItem) {
         if table.selectedRow < 0 {

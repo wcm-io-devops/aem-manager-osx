@@ -129,12 +129,6 @@
                                                 <action selector="openCRX:" target="Ady-hI-5gd" id="jrP-pW-Rnv"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Open CRX Content Explorer" id="OpM-mG-731">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="openCRXContentExplorer:" target="Ady-hI-5gd" id="Bia-pW-AcW"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Open CRXDE Lite" id="8be-N1-6zO">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
