@@ -316,6 +316,14 @@ class ViewController: NSViewController {
         }
     }
     
+    @IBAction func showHelp(_ sender: NSMenuItem) {
+
+        let url = "https://docs.adobe.com/docs/en/aem/6-2/develop/ref.html"
+        if let openUrl = URL(string:url){
+            NSWorkspace.shared().open(openUrl)
+        }
+    }
+    
     @IBAction func openCRXContentExplorer(_ sender: NSMenuItem) {
         
         if table.selectedRow < 0 {
