@@ -356,6 +356,12 @@ class ViewController: NSViewController {
             url = AEMInstance.getUrl(instance)
             url.append("/crxde")
         }
+        
+        // enable davex
+        if selectedInstance?.type == AEMInstance.defaultType {
+            AemActions.enableDavex(selectedInstance!)
+        }
+        
         if let openUrl = URL(string: url){
             NSWorkspace.shared().open(openUrl)
         }
