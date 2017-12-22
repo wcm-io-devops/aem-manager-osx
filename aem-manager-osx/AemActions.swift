@@ -23,6 +23,8 @@ class AemActions: NSObject {
         
         if instance.type == AEMInstance.defaultType{
             jarArgs.append("-p\(instance.port)")
+            // Set admin password
+            jarArgs.append("-Dadmin.password=\(instance.password)")
         }else{
             javaArgs.append("-D-crx.quickstart.server.port=\(instance.port)")
         }
@@ -78,7 +80,7 @@ class AemActions: NSObject {
         javaArgs.append("\(instance.path)")
         
         args = javaArgs + jarArgs
-        //print("Args:\(args)")
+        print("Args:\(args)")
         
         return args
     }
@@ -112,7 +114,92 @@ class AemActions: NSObject {
         
     }
     
+    static func enableDavex(_ instance:AEMInstance) -> Bool {
+        
+        
+        if (isDavexDisabled(instance)){
+            
+            let PasswordString = "\(instance.userName):\(instance.password)"
+            let PasswordData = PasswordString.data(using: String.Encoding.utf8)
+            let base64EncodedCredential = PasswordData!.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+            
+            let davexServletUrl = AEMInstance.getUrlWithContextPath(instance) + "/apps/system/config/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet";
+            
+            
+            let test = AEMInstance.getUrlWithContextPath(instance)  + "system/console/configMgr/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet"
+            print(davexServletUrl)
+            let url = NSURL(string: davexServletUrl)
+            let request = NSMutableURLRequest(url: url! as URL)
+            
+            request.setValue("Basic \(base64EncodedCredential)", forHTTPHeaderField: "Authorization")
+            
+            print("Enabling Davex Servlet now!")
+            request.setValue("jcr:primaryType",forHTTPHeaderField: "sling:OsgiConfig")
+            request.setValue("alias",forHTTPHeaderField: "/crx/server")
+            request.setValue("dav.create-absolute-uri",forHTTPHeaderField: "true")
+            request.setValue("dav.create-absolute-uri@TypeHint",forHTTPHeaderField: "Boolean")
+            
+            
+            let params = ["jcr:primaryType": "sling:OsgiConfig","alias":  "/crx/server", "dav.create-absolute-uri": "true","dav.create-absolute-uri@TypeHint":  "Boolean"]
+            let httpData = NSKeyedArchiver.archivedData(withRootObject: params)
+            request.httpBody = httpData
+            //request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            request.httpMethod = "POST"
+            let session = URLSession.shared
+            session.dataTask(with: request as URLRequest, completionHandler: { (returnData, response, error) -> Void in
+                let strData = NSString(data: returnData!, encoding: String.Encoding.utf8.rawValue)
+                print("Execured!!\(strData)")
+            }).resume() //Remember this one or nothing will happen :-)
+        }
+        
+        return true
+    }
     
+    static func enableDavexWithCurl(instance: AEMInstance)->Void{
+        var args = [String]()
+        let task = Process()
+        
+        args.append("curl -u admin:admin" )
+        args.append(AEMInstance.getUrlWithContextPath(instance))
+        args.append("/apps/system/config/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet")
+        args.append("-F 'jcr:primaryType=sling:OsgiConfig'")
+        args.append("-F 'alias=/crx/server'")
+        args.append("-F 'dav.create-absolute-uri=true'")
+        args.append("-F 'dav.create-absolute-uri@TypeHint=Boolean'")
+        
+        let pipe = Pipe()
+        task.launchPath = "/usr/bin/curl"
+        task.arguments = args
+        task.launch()
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let output = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+        
+        print(output!)
+    }
+    
+    static func isDavexDisabled(_ instance: AEMInstance)-> Bool{
+        let PasswordString = "\(instance.userName):\(instance.password)"
+        let PasswordData = PasswordString.data(using: String.Encoding.utf8)
+        let base64EncodedCredential = PasswordData!.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+        let davExUrl = AEMInstance.getUrlWithContextPath(instance) + "/crx/server/crx.default/jcr:root/.1.json";
+        var request = URLRequest(url: URL(string: davExUrl)!)
+        request.setValue("Basic \(base64EncodedCredential)", forHTTPHeaderField: "Authorization")
+        
+        do{
+            let (data, response) = try URLSession.shared.synchronousDataTask(with: request)
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 404 {
+                    print("404:Davex Servlet still disabled: \(response)")
+                    return true
+                }else{
+                    print("200:Davex Servlet enabled: \(response)")
+                }
+            }
+        } catch _ {
+            print("Can not enable Davex servlet!")
+        }
+        return false
+    }
     static func stopInstance(_ instance: AEMInstance) {
         
         let PasswordString = "\(instance.userName):\(instance.password)"
@@ -196,6 +283,38 @@ class AemActions: NSObject {
         task.resume()
         
         
+        
+    }
+    
+}
+
+extension URLSession {
+    
+    func synchronousDataTask(with request: URLRequest) throws -> (data: Data?, response: HTTPURLResponse?) {
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        var responseData: Data?
+        var theResponse: URLResponse?
+        var theError: Error?
+        
+        dataTask(with: request) { (data, response, error) -> Void in
+            
+            responseData = data
+            theResponse = response
+            theError = error
+            
+            semaphore.signal()
+            
+            }.resume()
+        
+        _ = semaphore.wait(timeout: .distantFuture)
+        
+        if let error = theError {
+            throw error
+        }
+        
+        return (data: responseData, response: theResponse as! HTTPURLResponse?)
         
     }
     

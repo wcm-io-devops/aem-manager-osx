@@ -13,7 +13,7 @@ class AEMInstance: NSObject, NSCoding {
     
     static let defaultPort = 4502
     static let defaultHeapMinMB = 128
-    static let defaultHeapMaxMB = 1024
+    static let defaultHeapMaxMB = 2056
     static let defaultPermSizeMB = 256
     static let defaultJProfilerPort = 8849
     static let defaultJConsolePort = 9999
