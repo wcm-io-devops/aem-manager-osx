@@ -67,20 +67,20 @@ class AemInstanceController: NSViewController {
             
             let runMode =  aeminstance!.runMode
             if runMode == RunMode.Author{
-                authorRadioButton?.state = NSOnState
-                publishRadioButton?.state = NSOffState
+                authorRadioButton?.state = NSControl.StateValue.on
+                publishRadioButton?.state = NSControl.StateValue.off
             }else{
-                publishRadioButton?.state = NSOffState
-                authorRadioButton?.state = NSOnState
+                publishRadioButton?.state = NSControl.StateValue.off
+                authorRadioButton?.state = NSControl.StateValue.on
             }
-            jProfilerCheckBox.state = aeminstance?.jProfiler == true ? NSOnState : NSOffState
-            jConsoleCheckBox.state = aeminstance?.jConsole == true ? NSOnState : NSOffState
-            customJvmCheckBox.state = aeminstance?.customJVMArgsActive == true ? NSOnState : NSOffState
-            jvmDebugCheckBox.state = aeminstance?.jVMDebug == true ? NSOnState : NSOffState
+            jProfilerCheckBox.state = aeminstance?.jProfiler == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            jConsoleCheckBox.state = aeminstance?.jConsole == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            customJvmCheckBox.state = aeminstance?.customJVMArgsActive == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            jvmDebugCheckBox.state = aeminstance?.jVMDebug == true ? NSControl.StateValue.on : NSControl.StateValue.off
             
-            iconCheckBox.state = aeminstance?.showIcon == true ? NSOnState : NSOffState
-            processWindowCheckBox.state = aeminstance?.showProcess == true ? NSOnState : NSOffState
-            openBrowserCheckBox.state = aeminstance?.openBrowser == true ? NSOnState : NSOffState
+            iconCheckBox.state = aeminstance?.showIcon == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            processWindowCheckBox.state = aeminstance?.showProcess == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            openBrowserCheckBox.state = aeminstance?.openBrowser == true ? NSControl.StateValue.on : NSControl.StateValue.off
             iconSetComboBox?.stringValue = aeminstance!.icon
             
         }
@@ -144,16 +144,16 @@ class AemInstanceController: NSViewController {
         aeminstance!.jProfilerPort = jProfilerField!.integerValue
         aeminstance!.jConsolePort = jConsoleField!.integerValue
         aeminstance!.customJVMArgs = customJvmField!.stringValue
-        aeminstance!.runMode = authorRadioButton?.state == NSOnState ? RunMode.Author : RunMode.Publish
+        aeminstance!.runMode = authorRadioButton?.state == NSControl.StateValue.on ? RunMode.Author : RunMode.Publish
         
-        aeminstance!.jProfiler = jProfilerCheckBox.state == NSOnState ? true : false
-        aeminstance!.jConsole = jConsoleCheckBox.state == NSOnState ? true : false
-        aeminstance!.customJVMArgsActive = customJvmCheckBox.state == NSOnState ? true : false
-        aeminstance!.jVMDebug = jvmDebugCheckBox.state == NSOnState ? true : false
+        aeminstance!.jProfiler = jProfilerCheckBox.state == NSControl.StateValue.on ? true : false
+        aeminstance!.jConsole = jConsoleCheckBox.state == NSControl.StateValue.on ? true : false
+        aeminstance!.customJVMArgsActive = customJvmCheckBox.state == NSControl.StateValue.on ? true : false
+        aeminstance!.jVMDebug = jvmDebugCheckBox.state == NSControl.StateValue.on ? true : false
         
-        aeminstance!.showProcess = processWindowCheckBox.state == NSOnState ? true : false
-        aeminstance!.showIcon = iconCheckBox.state == NSOnState ? true : false
-        aeminstance!.openBrowser = openBrowserCheckBox.state == NSOnState ? true : false
+        aeminstance!.showProcess = processWindowCheckBox.state == NSControl.StateValue.on ? true : false
+        aeminstance!.showIcon = iconCheckBox.state == NSControl.StateValue.on ? true : false
+        aeminstance!.openBrowser = openBrowserCheckBox.state == NSControl.StateValue.on ? true : false
         aeminstance!.icon = iconSetComboBox!.stringValue
         
         if AEMInstance.validate(aeminstance!){
@@ -164,7 +164,7 @@ class AemInstanceController: NSViewController {
             
             instances.append(aeminstance!)
             
-            print("Saving Instance to db with name:\(aeminstance!.name) and id: \(aeminstance?.id)")
+            print("Saving Instance to db with name:\(aeminstance!.name) and id: \(String(describing: aeminstance?.id))")
             AEMInstance.save(instances)
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: "reload"), object: nil)
@@ -174,13 +174,13 @@ class AemInstanceController: NSViewController {
         }
         else{
             // show message
-            performSegue(withIdentifier: "error",sender: self)
+            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "error"),sender: self)
             
         }
     }
     
     @IBAction func showIcon(_ sender: NSButton) {
-        if sender.state == NSOnState {
+        if sender.state == NSControl.StateValue.on {
             aeminstance!.showIcon = true
         }else {
             aeminstance!.showIcon = false
@@ -188,7 +188,7 @@ class AemInstanceController: NSViewController {
     }
     
     @IBAction func showProcessOnStartup(_ sender: NSButton) {
-        if sender.state == NSOnState{
+        if sender.state == NSControl.StateValue.on{
             aeminstance!.showProcess = true
         }else{
             aeminstance!.showProcess = false
@@ -196,7 +196,7 @@ class AemInstanceController: NSViewController {
     }
     
     @IBAction func openBrowser(_ sender: NSButton) {
-        if sender.state == NSOnState{
+        if sender.state == NSControl.StateValue.on{
             aeminstance!.openBrowser = true
         }else{
             aeminstance!.openBrowser = false
@@ -213,7 +213,7 @@ class AemInstanceController: NSViewController {
     }
     
     @IBAction func enableJVMDebugging(_ sender: NSButton) {
-        if sender.state == NSOnState{
+        if sender.state == NSControl.StateValue.on{
             aeminstance!.jVMDebug = true
         }else{
             aeminstance!.jVMDebug = false
@@ -221,7 +221,7 @@ class AemInstanceController: NSViewController {
     }
     
     @IBAction func enableJProfilerSupport(_ sender: NSButton) {
-        if sender.state == NSOnState{
+        if sender.state == NSControl.StateValue.on{
             aeminstance!.jProfiler = true
         }else{
             aeminstance!.jProfiler = false
@@ -229,7 +229,7 @@ class AemInstanceController: NSViewController {
     }
     
     @IBAction func enableJConsoleSupport(_ sender: NSButton) {
-        if sender.state == NSOnState{
+        if sender.state == NSControl.StateValue.on{
             aeminstance!.jConsole = true
         }else{
             aeminstance!.jConsole = false
@@ -237,14 +237,14 @@ class AemInstanceController: NSViewController {
     }
     @IBAction func enableCustomJVMSettings(_ sender: NSButton) {
         
-        if sender.state == NSOnState{
+        if sender.state == NSControl.StateValue.on{
             aeminstance!.customJVMArgsActive = true
         }else{
             aeminstance!.customJVMArgsActive = false
         }
     }
     @IBAction func enableSampleContent(_ sender: NSButton) {
-        if sender.state == NSOnState{
+        if sender.state == NSControl.StateValue.on{
             aeminstance!.runModeSampleContent = true
         }else{
             aeminstance!.runModeSampleContent = false

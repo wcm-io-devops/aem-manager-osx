@@ -49,7 +49,7 @@ class AemActions: NSObject {
         }
         
         if instance.jProfiler && instance.jProfilerPort > 0 {
-            // javaArgs.append("-agentlib:jprofilerti=port=\(instance.jProfilerPort)")
+            javaArgs.append("-agentpath:/Applications/JProfiler.app/Contents/Resources/app/bin/macos/libjprofilerti.jnilib=port=\(instance.jProfilerPort)")
         }
         
         if instance.jConsole && instance.jConsolePort > 0 {
@@ -103,8 +103,8 @@ class AemActions: NSObject {
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: String.Encoding.utf8)!
-        if output.characters.count > 0 {
-            return output.substring(to: output.characters.index(output.endIndex, offsetBy: -1))
+        if output.count > 0 {
+            return output.substring(to: output.index(output.endIndex, offsetBy: -1))
             
         }
         print(output)
@@ -126,7 +126,7 @@ class AemActions: NSObject {
             let davexServletUrl = AEMInstance.getUrlWithContextPath(instance) + "/apps/system/config/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet";
             
             
-            let test = AEMInstance.getUrlWithContextPath(instance)  + "system/console/configMgr/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet"
+           // let test = AEMInstance.getUrlWithContextPath(instance)  + "system/console/configMgr/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet"
             print(davexServletUrl)
             let url = NSURL(string: davexServletUrl)
             let request = NSMutableURLRequest(url: url! as URL)
@@ -147,8 +147,8 @@ class AemActions: NSObject {
             request.httpMethod = "POST"
             let session = URLSession.shared
             session.dataTask(with: request as URLRequest, completionHandler: { (returnData, response, error) -> Void in
-                let strData = NSString(data: returnData!, encoding: String.Encoding.utf8.rawValue)
-                print("Execured!!\(strData)")
+                _ = NSString(data: returnData!, encoding: String.Encoding.utf8.rawValue)
+
             }).resume() //Remember this one or nothing will happen :-)
         }
         
@@ -189,10 +189,10 @@ class AemActions: NSObject {
             let (data, response) = try URLSession.shared.synchronousDataTask(with: request)
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 404 {
-                    print("404:Davex Servlet still disabled: \(response)")
+                    print("404:Davex Servlet still disabled: \(String(describing: response))")
                     return true
                 }else{
-                    print("200:Davex Servlet enabled: \(response)")
+                    print("200:Davex Servlet enabled: \(String(describing: response))")
                 }
             }
         } catch _ {
@@ -221,8 +221,7 @@ class AemActions: NSObject {
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             // handle error
             guard error == nil else { return }
-            
-            print("Response: \(response)")
+
             
         })
         instance.status = BundleStatus.notActive
@@ -255,7 +254,7 @@ class AemActions: NSObject {
             
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode != 200 {
-                    print("response was not 200: \(response)")
+
                     instance.status = BundleStatus.notActive
                     return
                 }
