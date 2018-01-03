@@ -8,6 +8,8 @@
 
 import Cocoa
 
+import os.log
+
 class ViewController: NSViewController {
     
     // MARK: properties
@@ -16,7 +18,7 @@ class ViewController: NSViewController {
     
     var instances = AEMInstance.loadAEMInstances()
     weak var selectedInstance: AEMInstance?
-
+    
     var guiarray:[NSWindowController] = []
     var items: [NSStatusItem] = []
     
@@ -72,16 +74,16 @@ class ViewController: NSViewController {
                     self.tagName.remove(at: self.tagName.startIndex)
                     
                 }
-                print("Tagname: \(self.tagName)")
+                
+                os_log("Tagname: %@",type:.info,self.tagName )
                 
             }
             catch {
-                print("json error: \(error)")
+                os_log("Can not fetch Version: %@",type:.error,error.localizedDescription )
             }
         })
         task.resume()
-        
-        print("ALL: \(version) : \(tagName)")
+        os_log("Version: %@ --- Tagname: %@",type:.info,version,self.tagName )
         
         
         if version.versionToInt().lexicographicallyPrecedes(tagName.versionToInt()) {
@@ -174,10 +176,9 @@ class ViewController: NSViewController {
             if let winCrtl = storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "aemInstanceGUI")) as? NSWindowController {
                 if let aemInstanceGui = winCrtl.contentViewController as? AemInstanceController{
                     // add data
-                    print("Selected Instance in table with id \(String(describing: selectedInstance?.id)) and name \(String(describing: selectedInstance?.name))")
                     aemInstanceGui.aeminstance = selectedInstance
                     aemInstanceGui.instances = instances
-                    print("Edit Instance with name : \(aemInstanceGui.aeminstance!.name) and id: \(aemInstanceGui.aeminstance!.id)")
+                    os_log("Edit Instance with name : %@ and id: %@",type:.info,aemInstanceGui.aeminstance!.name, aemInstanceGui.aeminstance!.id)
                 }
                 winCrtl.showWindow(self)
                 guiarray.append(winCrtl)
@@ -196,7 +197,7 @@ class ViewController: NSViewController {
                 aemInstanceGui.aeminstance = AEMInstance()
                 aemInstanceGui.instances = instances
                 
-                print("New Instance with id \(aemInstanceGui.aeminstance!.id)")
+                os_log("New Instance with id: %@",type:.info, aemInstanceGui.aeminstance!.id)
             }
             winCrtl.showWindow(self)
             guiarray.append(winCrtl)
@@ -212,11 +213,11 @@ class ViewController: NSViewController {
         }else{
             if instances.contains(selectedInstance!){
                 instances.remove(at: instances.index(of: selectedInstance!)!)
-
+                
                 AEMInstance.save(instances)
                 
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "reload"), object: nil)
-
+                
             }
         }
         
@@ -231,8 +232,8 @@ class ViewController: NSViewController {
             backgroundThread(background: {
                 AemActions.startInstance(self.selectedInstance!)
                 
-                },completion: {
-                    
+            },completion: {
+                
             })
         }
         
@@ -243,8 +244,8 @@ class ViewController: NSViewController {
         
         backgroundThread(background: {
             AemActions.startInstance(sender.ins)
-            },completion: {
-                
+        },completion: {
+            
         })
     }
     
@@ -254,7 +255,6 @@ class ViewController: NSViewController {
         if table.selectedRow < 0 {
             performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
         }else{
-            print("Stop Instance")
             AemActions.stopInstance(selectedInstance!)
         }
     }
@@ -267,7 +267,6 @@ class ViewController: NSViewController {
         if table.selectedRow < 0 {
             performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
         }else{
-            print("Open Author/Publish")
             if let url = URL(string: AEMInstance.getUrlWithContextPath(selectedInstance!)){
                 NSWorkspace.shared.open(url)
             }
@@ -286,18 +285,13 @@ class ViewController: NSViewController {
         if table.selectedRow < 0 {
             performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
         }else{
-            print("Open CRX")
             openFuncCRX(selectedInstance!)
             
         }
     }
     
     @objc func openCRX2(_ sender: InstanceMenuItem) {
-        
-        print("Open CRX")
         openFuncCRX(sender.ins)
-        
-        
     }
     
     func openFuncCRX(_ instace: AEMInstance){
@@ -313,7 +307,7 @@ class ViewController: NSViewController {
     }
     
     @IBAction func showHelp(_ sender: NSMenuItem) {
-
+        
         let url = "https://docs.adobe.com/docs/en/aem/6-2/develop/ref.html"
         if let openUrl = URL(string:url){
             NSWorkspace.shared.open(openUrl)
@@ -342,8 +336,6 @@ class ViewController: NSViewController {
     }
     
     func openInstanceFolderFunc(_ instance: AEMInstance){
-        print("Open Instance Folder")
-        
         NSWorkspace.shared.selectFile(instance.path, inFileViewerRootedAtPath: "")
         
     }
@@ -380,7 +372,6 @@ class ViewController: NSViewController {
     }
     
     func openFelixConsoleFunc(_ instance: AEMInstance){
-        print("Open Felix Console")
         var url = AEMInstance.getUrlWithContextPath(instance)
         url.append("/system/console")
         if let openUrl = URL(string: url){
@@ -405,7 +396,6 @@ class ViewController: NSViewController {
         
         self.view.window?.makeKeyAndOrderFront(self)
         self.view.window!.orderFront(self)
-        print("open Error Log")
         openErrorLogFunc(sender.ins)
     }
     
@@ -479,7 +469,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
     }
     func tableViewSelectionDidChange(_ notification: Notification) {
         if table.selectedRow >= 0 {
-            print("Selected instance in table with name : \(instances[table.selectedRow].name) and id: \(instances[table.selectedRow].id)")
+            os_log("Selected instance in table with name : %@ and id: %@",type:.info,instances[table.selectedRow].name, instances[table.selectedRow].id)
             // set seletected instance
             selectedInstance = instances[table.selectedRow]
             

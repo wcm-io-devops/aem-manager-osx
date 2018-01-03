@@ -8,6 +8,8 @@
 
 import Cocoa
 
+import os.log
+
 class AemInstanceController: NSViewController {
     
     var instances = [AEMInstance]()
@@ -163,8 +165,8 @@ class AemInstanceController: NSViewController {
             }
             
             instances.append(aeminstance!)
+            os_log("Saving Instance to db with name: %@ and id:%@ ", type:.info, (aeminstance?.name)!,(aeminstance?.id)!)
             
-            print("Saving Instance to db with name:\(aeminstance!.name) and id: \(String(describing: aeminstance?.id))")
             AEMInstance.save(instances)
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: "reload"), object: nil)

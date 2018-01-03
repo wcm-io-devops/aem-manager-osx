@@ -8,6 +8,8 @@
 
 import Foundation
 
+import os.log
+
 class AemActions: NSObject {
     
     
@@ -80,7 +82,8 @@ class AemActions: NSObject {
         javaArgs.append("\(instance.path)")
         
         args = javaArgs + jarArgs
-        print("Args:\(args)")
+        // print("Args:\(args)")
+        os_log("Command Line Arguments: %@", type:.info, args)
         
         return args
     }
@@ -94,7 +97,6 @@ class AemActions: NSObject {
         let task = Process()
         task.launchPath = instance.javaExecutable
         task.arguments = buildCommandLineArguments(instance)
-        print("Arguments:\(task.arguments!)")
         let pipe = Pipe()
         task.standardOutput = pipe
         task.launch()
@@ -107,15 +109,13 @@ class AemActions: NSObject {
             return output.substring(to: output.index(output.endIndex, offsetBy: -1))
             
         }
-        print(output)
-        
+        os_log("Output: %@", type:.info, output)
         
         return output
         
     }
     
     static func enableDavex(_ instance:AEMInstance) -> Bool {
-        
         
         if (isDavexDisabled(instance)){
             
@@ -125,15 +125,12 @@ class AemActions: NSObject {
             
             let davexServletUrl = AEMInstance.getUrlWithContextPath(instance) + "/apps/system/config/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet";
             
-            
-           // let test = AEMInstance.getUrlWithContextPath(instance)  + "system/console/configMgr/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet"
-            print(davexServletUrl)
+            // let test = AEMInstance.getUrlWithContextPath(instance)  + "system/console/configMgr/org.apache.sling.jcr.davex.impl.servlets.SlingDavExServlet"
             let url = NSURL(string: davexServletUrl)
             let request = NSMutableURLRequest(url: url! as URL)
             
             request.setValue("Basic \(base64EncodedCredential)", forHTTPHeaderField: "Authorization")
             
-            print("Enabling Davex Servlet now!")
             request.setValue("jcr:primaryType",forHTTPHeaderField: "sling:OsgiConfig")
             request.setValue("alias",forHTTPHeaderField: "/crx/server")
             request.setValue("dav.create-absolute-uri",forHTTPHeaderField: "true")
@@ -148,7 +145,7 @@ class AemActions: NSObject {
             let session = URLSession.shared
             session.dataTask(with: request as URLRequest, completionHandler: { (returnData, response, error) -> Void in
                 _ = NSString(data: returnData!, encoding: String.Encoding.utf8.rawValue)
-
+                
             }).resume() //Remember this one or nothing will happen :-)
         }
         
@@ -173,8 +170,8 @@ class AemActions: NSObject {
         task.launch()
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+        os_log("Davex cUrl output: %@", type:.info, output!)
         
-        print(output!)
     }
     
     static func isDavexDisabled(_ instance: AEMInstance)-> Bool{
@@ -186,17 +183,19 @@ class AemActions: NSObject {
         request.setValue("Basic \(base64EncodedCredential)", forHTTPHeaderField: "Authorization")
         
         do{
-            let (data, response) = try URLSession.shared.synchronousDataTask(with: request)
-            if let httpResponse = response as? HTTPURLResponse {
+            let (_, response) = try URLSession.shared.synchronousDataTask(with: request)
+            if let httpResponse = response {
                 if httpResponse.statusCode == 404 {
-                    print("404:Davex Servlet still disabled: \(String(describing: response))")
+                    os_log("404:Davex Servlet still disabled: %@", type:.info, response!)
+                    //print("404:Davex Servlet still disabled: \(String(describing: response))")
                     return true
                 }else{
-                    print("200:Davex Servlet enabled: \(String(describing: response))")
+                    os_log("200:Davex Servlet enabled: %@", type:.info, response!)
+                    //print("200:Davex Servlet enabled: \(String(describing: response))")
                 }
             }
         } catch _ {
-            print("Can not enable Davex servlet!")
+            os_log("Can not enable Davex servlet", type:.error)
         }
         return false
     }
@@ -221,7 +220,7 @@ class AemActions: NSObject {
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             // handle error
             guard error == nil else { return }
-
+            
             
         })
         instance.status = BundleStatus.notActive
@@ -248,13 +247,13 @@ class AemActions: NSObject {
             // handle error
             if (error != nil){
                 instance.status = BundleStatus.notActive
-                print(error)
+                os_log("Bundles are not active!", type:.debug)
                 return
             }
             
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode != 200 {
-
+                    
                     instance.status = BundleStatus.notActive
                     return
                 }
@@ -264,24 +263,20 @@ class AemActions: NSObject {
                         let jsonResult: NSDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                         
                         let status = jsonResult["status"] as! String
-                        print("Status: \(status)")
                         if status.contains("resolved")  || status.contains("installed"){
                             instance.status = BundleStatus.starting_Stopping
                         }else{
                             instance.status = BundleStatus.running
                         }
-                        
                     } catch let error as NSError {
                         instance.status = BundleStatus.notActive
-                        print(error)
+                        os_log("Bundles are not active: %@", type:.debug, error.debugDescription)
                     }
                 }
             }
             
         })
         task.resume()
-        
-        
         
     }
     
