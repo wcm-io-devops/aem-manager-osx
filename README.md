@@ -48,7 +48,6 @@ For each instance icon a context menu offers to start/stop the instance, open lo
 Known Bugs
 ----------
 
-* No JProfiler Support
 * Some java args seems not supported by NSTask()
 
 Dev  Notes
