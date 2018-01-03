@@ -22,8 +22,8 @@ Installation
 *  In case  of Problems  especially  with MacOS  Versions  <  10.12  installing  Release  Versions <  0.1.6 may help.
 
 Relase 0.1.5 tested with OS X 10.11 El Capitan 
-
 Release 0.1.6 tested with MacOS 10.12 Sierra.
+Release 0.1.7 tested with MacOS 10.13 High Sierra.
 
 
 Features
