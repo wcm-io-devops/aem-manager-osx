@@ -446,7 +446,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         if let coid = tableColumn?.identifier {
-            switch coid._rawValue {
+            switch coid.rawValue {
             case "name": return instances[row].name
             case "path": return instances[row].path
             case "type": return instances[row].type
