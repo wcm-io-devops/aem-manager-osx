@@ -19,7 +19,7 @@ class AEMInstance: NSObject, NSCoding {
     static let defaultJConsolePort = 9999
     static let defaultType = "AEM 5.5, 6.0 or higher"
     
-    let id = UUID().uuidString
+    var id = UUID().uuidString
     var name: String = ""
     var path: String = ""
     
@@ -114,7 +114,7 @@ class AEMInstance: NSObject, NSCoding {
     // MARK: NSCoding
     required convenience init(coder decoder: NSCoder) {
         self.init()
-        self.name = decoder.decodeObject(forKey: "id") as! String
+        self.id = decoder.decodeObject(forKey: "id") as! String
         self.name = decoder.decodeObject(forKey: "name") as! String
         self.type = decoder.decodeObject(forKey: "type") as! String
         self.path = decoder.decodeObject(forKey: "path") as! String
@@ -151,7 +151,7 @@ class AEMInstance: NSObject, NSCoding {
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(self.name, forKey: "id")
+        coder.encode(self.id, forKey: "id")
         coder.encode(self.name, forKey: "name")
         coder.encode(self.type, forKey: "type")
         coder.encode(self.path, forKey: "path")
