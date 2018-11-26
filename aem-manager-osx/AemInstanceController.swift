@@ -72,8 +72,8 @@ class AemInstanceController: NSViewController {
                 authorRadioButton?.state = NSControl.StateValue.on
                 publishRadioButton?.state = NSControl.StateValue.off
             }else{
-                publishRadioButton?.state = NSControl.StateValue.off
-                authorRadioButton?.state = NSControl.StateValue.on
+                publishRadioButton?.state = NSControl.StateValue.on
+                authorRadioButton?.state = NSControl.StateValue.off
             }
             jProfilerCheckBox.state = aeminstance?.jProfiler == true ? NSControl.StateValue.on : NSControl.StateValue.off
             jConsoleCheckBox.state = aeminstance?.jConsole == true ? NSControl.StateValue.on : NSControl.StateValue.off
