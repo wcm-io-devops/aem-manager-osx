@@ -20,7 +20,7 @@ class ViewController: NSViewController {
     weak var selectedInstance: AEMInstance?
     
     var guiarray:[NSWindowController] = []
-    var items: [NSStatusItem] = []
+    var statusBarItems: [StatusBarItem] = []
     
     var timer = Timer()
     var timer2 = Timer()
@@ -98,62 +98,18 @@ class ViewController: NSViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.reloadTableData(_:)), name: NSNotification.Name(rawValue: "reload"), object: nil)
         
+        initStatusBarItems()
+    }
+    
+    func initStatusBarItems(){
+        
+        statusBarItems.forEach {
+            item in item.removeFromStatusBar()
+        }
+        
         for instance in instances{
             if instance.showIcon {
-                let statusBarItem = NSStatusBar.system.statusItem(withLength: -1)
-                statusBarItem.target = self
-                items.append(statusBarItem)
-                let icon = NSImage(named: NSImage.Name(rawValue: String(instance.icon.last!)))
-                statusBarItem.image = icon
-                
-                
-                let menu : NSMenu = NSMenu()
-                menu.autoenablesItems = false
-                
-                let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: #selector(ViewController.startInstance2(_:)), k: "",instance: instance)
-                startInstanceMenuItem.target = self
-                menu.addItem(startInstanceMenuItem)
-                
-                let stopInstanceMenuItem = InstanceMenuItem(t: "Stop Instance", a: #selector(ViewController.stopInstance2(_:)), k: "",instance: instance)
-                stopInstanceMenuItem.target = self
-                menu.addItem(stopInstanceMenuItem)
-                
-                menu.addItem(NSMenuItem.separator())
-                
-                let openAuthorMenuItem = InstanceMenuItem(t: "Open Author/Publish", a: #selector(ViewController.openAuthor2(_:)), k: "",instance: instance)
-                openAuthorMenuItem.target = self
-                menu.addItem(openAuthorMenuItem)
-                
-                let openCRX = InstanceMenuItem(t: "Open CRX", a: #selector(ViewController.openCRX2(_:)), k: "",instance: instance)
-                openCRX.target = self
-                menu.addItem(openCRX)
-                
-                let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: #selector(ViewController.openCRXDE2(_:)), k: "",instance: instance)
-                openCRXDE.target = self
-                menu.addItem(openCRXDE)
-                
-                let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: #selector(ViewController.openFelixConsole2(_:)), k: "",instance: instance)
-                openFelixConsole.target = self
-                menu.addItem(openFelixConsole)
-                
-                menu.addItem(NSMenuItem.separator())
-                
-                let openInstanceFolder = InstanceMenuItem(t: "Open in \"Finder\"", a: #selector(ViewController.openInstanceFolder2(_:)), k: "",instance: instance)
-                openInstanceFolder.target = self
-                menu.addItem(openInstanceFolder)
-                
-                menu.addItem(NSMenuItem.separator())
-                
-                let eLog = InstanceMenuItem(t: "Error Log", a: #selector(ViewController.openErrorLog2(_:)), k: "",instance: instance)
-                eLog.target = self
-                menu.addItem(eLog)
-                
-                let rLog = InstanceMenuItem(t: "Request Log", a: #selector(ViewController.openRequestLog2(_:)), k: "",instance: instance)
-                rLog.target = self
-                menu.addItem(rLog)
-                
-                statusBarItem.menu = menu
-                
+                statusBarItems.append(StatusBarItem(target: self, instance: instance))
             }
         }
         
@@ -439,6 +395,7 @@ class ViewController: NSViewController {
     @objc func reloadTableData(_ notification: Notification){
         instances = AEMInstance.loadAEMInstances()
         table.reloadData()
+        initStatusBarItems()
     }
     
 }

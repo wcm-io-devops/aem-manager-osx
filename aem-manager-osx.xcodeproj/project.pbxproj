@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B199A3D721AC4811007F5789 /* StatusBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B199A3D621AC4811007F5789 /* StatusBarItem.swift */; };
 		D013D88E1C09CC8700D6954D /* AEMInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D013D88D1C09CC8700D6954D /* AEMInstance.swift */; };
 		D013D8911C0A27E700D6954D /* AemInstanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D013D8901C0A27E700D6954D /* AemInstanceController.swift */; };
 		D01734611C28297500312204 /* AemActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01734601C28297500312204 /* AemActions.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B199A3D621AC4811007F5789 /* StatusBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarItem.swift; sourceTree = "<group>"; };
 		D013D88D1C09CC8700D6954D /* AEMInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEMInstance.swift; sourceTree = "<group>"; };
 		D013D8901C0A27E700D6954D /* AemInstanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AemInstanceController.swift; sourceTree = "<group>"; };
 		D01734601C28297500312204 /* AemActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AemActions.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				D01734601C28297500312204 /* AemActions.swift */,
 				D05E6F6C1C08D1E40090EC54 /* Assets.xcassets */,
 				D05E6F6E1C08D1E40090EC54 /* Main.storyboard */,
+				B199A3D621AC4811007F5789 /* StatusBarItem.swift */,
 				D05E6F711C08D1E40090EC54 /* Info.plist */,
 			);
 			path = "aem-manager-osx";
@@ -169,6 +172,7 @@
 				D01734631C28298300312204 /* BundleStatus.swift in Sources */,
 				D013D8911C0A27E700D6954D /* AemInstanceController.swift in Sources */,
 				D05D61FE1C0CD6420034E8B6 /* RunMode.swift in Sources */,
+				B199A3D721AC4811007F5789 /* StatusBarItem.swift in Sources */,
 				D013D88E1C09CC8700D6954D /* AEMInstance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
