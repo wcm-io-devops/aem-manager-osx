@@ -147,7 +147,16 @@ class ViewController: NSViewController {
     }
     
     @IBAction func doubleClickInstance(_ sender: NSObject) {
-        editInstance()
+        if table.selectedRow >= 0 {
+            editInstance()
+        }
+    }
+    
+    func openContextMenu() -> NSMenu? {
+        if(selectedInstance != nil) {
+            return InstanceMenu(target: self, instance: selectedInstance)
+        }
+        return nil
     }
     
     @IBAction func newInstance(_ sender: NSMenuItem) {
@@ -431,15 +440,83 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
         }
         return nil
     }
+    
     func tableViewSelectionDidChange(_ notification: Notification) {
         if table.selectedRow >= 0 {
             os_log("Selected instance in table with name : %@ and id: %@",type:.info,instances[table.selectedRow].name, instances[table.selectedRow].id)
             // set seletected instance
             selectedInstance = instances[table.selectedRow]
-            
+        }
+        else {
+            selectedInstance = nil
         }
     }
+
+    
 }
+
+
+class InstanceMenu : NSMenu {
+    
+    required init(coder decoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(target: ViewController!, instance:AEMInstance!){
+        super.init(title: instance.id)
+        
+        autoenablesItems = false
+        let nameItem = NSMenuItem(title: instance.name, action: nil, keyEquivalent: "")
+        nameItem.isEnabled=false
+        addItem(nameItem)
+        addItem(NSMenuItem.separator())
+        
+        
+        let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: #selector(ViewController.startInstance2(_:)), k: "",instance: instance)
+        startInstanceMenuItem.target = target
+        addItem(startInstanceMenuItem)
+        
+        let stopInstanceMenuItem = InstanceMenuItem(t: "Stop Instance", a: #selector(ViewController.stopInstance2(_:)), k: "",instance: instance)
+        stopInstanceMenuItem.target = target
+        addItem(stopInstanceMenuItem)
+        
+        addItem(NSMenuItem.separator())
+        
+        let openAuthorMenuItem = InstanceMenuItem(t: "Open Author/Publish", a: #selector(ViewController.openAuthor2(_:)), k: "",instance: instance)
+        openAuthorMenuItem.target = target
+        addItem(openAuthorMenuItem)
+        
+        let openCRX = InstanceMenuItem(t: "Open CRX", a: #selector(ViewController.openCRX2(_:)), k: "",instance: instance)
+        openCRX.target = target
+        addItem(openCRX)
+        
+        let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: #selector(ViewController.openCRXDE2(_:)), k: "",instance: instance)
+        openCRXDE.target = target
+        addItem(openCRXDE)
+        
+        let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: #selector(ViewController.openFelixConsole2(_:)), k: "",instance: instance)
+        openFelixConsole.target = target
+        addItem(openFelixConsole)
+        
+        addItem(NSMenuItem.separator())
+        
+        let openInstanceFolder = InstanceMenuItem(t: "Open in \"Finder\"", a: #selector(ViewController.openInstanceFolder2(_:)), k: "",instance: instance)
+        openInstanceFolder.target = target
+        addItem(openInstanceFolder)
+        
+        addItem(NSMenuItem.separator())
+        
+        let eLog = InstanceMenuItem(t: "Error Log", a: #selector(ViewController.openErrorLog2(_:)), k: "",instance: instance)
+        eLog.target = target
+        addItem(eLog)
+        
+        let rLog = InstanceMenuItem(t: "Request Log", a: #selector(ViewController.openRequestLog2(_:)), k: "",instance: instance)
+        rLog.target = target
+        addItem(rLog)
+        
+    }
+}
+
 
 class InstanceMenuItem : NSMenuItem {
     var ins: AEMInstance
@@ -453,8 +530,29 @@ class InstanceMenuItem : NSMenuItem {
     required init(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// Unfortunately this is necessary so that the context-menu behaves as expected. I adapted the important pieces from
+// https://forums.macrumors.com/threads/cocoa-nstableview-right-click-action-and-row-detection-cruel-joke.2089066/
+class InstancesTableView : NSTableView {
     
-    
+    override func menu(for event: NSEvent) -> NSMenu? {
+        
+        if (self.numberOfRows == 0) {
+            return nil
+        }
+        
+        let row = self.row(at: self.convert(event.locationInWindow, from: nil))
+        
+        if (row == -1) {
+            return nil
+        }
+        
+        self.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
+        
+        let controller = delegate as! ViewController
+        return controller.openContextMenu()
+    }
 }
 
 extension String {
