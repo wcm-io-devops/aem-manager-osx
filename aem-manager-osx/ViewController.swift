@@ -167,7 +167,10 @@ class ViewController: NSViewController {
     }
     
     @IBAction func editInstance(_ sender: NSMenuItem) {
-        
+        editInstance()
+    }
+    
+    func editInstance() {
         if table.selectedRow < 0 {
             performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
         }else{
@@ -185,6 +188,10 @@ class ViewController: NSViewController {
             }
         }
         
+    }
+    
+    @IBAction func doubleClickInstance(_ sender: NSObject) {
+        editInstance()
     }
     
     @IBAction func newInstance(_ sender: NSMenuItem) {
