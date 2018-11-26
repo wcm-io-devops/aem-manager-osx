@@ -85,6 +85,8 @@ class AemInstanceController: NSViewController {
             openBrowserCheckBox.state = aeminstance?.openBrowser == true ? NSControl.StateValue.on : NSControl.StateValue.off
             iconSetComboBox?.stringValue = aeminstance!.icon
             
+            sampleContentCheckBox.state = aeminstance?.runModeSampleContent == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            
         }
         
         
