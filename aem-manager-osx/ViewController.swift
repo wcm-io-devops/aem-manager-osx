@@ -52,6 +52,10 @@ class ViewController: NSViewController {
         }
         
         table.reloadData()
+        
+        statusBarItems.forEach{
+            item in item.updateStatus()
+        }
     }
     
     @IBAction func checkVersionUpdate(_ sender: NSMenuItem){
@@ -425,13 +429,7 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
             case "type": return instances[row].type
             case "status":
                 let status = instances[row].status
-                switch status {
-                case .running: return "Running"
-                case .starting_Stopping: return "Starting/Stopping"
-                case .unknown: return "Unknown"
-                case .notActive: return "Not active"
-                case .disabled: return "Disabled"
-                }
+                return status.rawValue;
                 
             case "url": return AEMInstance.getUrl(instances[row])
             default: break

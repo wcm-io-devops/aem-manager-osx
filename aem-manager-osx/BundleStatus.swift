@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum BundleStatus {
-    case starting_Stopping
-    case running
-    case unknown
-    case disabled
-    case notActive
+enum BundleStatus:String {
+    case starting_Stopping="Starting/Stopping"
+    case running="Running"
+    case unknown="Unknown"
+    case disabled="Disabled"
+    case notActive="Not active"
     
 }

@@ -16,6 +16,7 @@ class StatusBarItem {
     
     internal let statusBarItem:NSStatusItem!
     internal let instance: AEMInstance!
+    internal let menu: InstanceMenu!
     
     init(target: ViewController!, instance:AEMInstance!){
         self.instance = instance;
@@ -23,12 +24,17 @@ class StatusBarItem {
         statusBarItem.target = target
         let icon = NSImage(named: NSImage.Name(rawValue: String(instance.icon.last!)))
         statusBarItem.image = icon
-        statusBarItem.menu = InstanceMenu(target:target, instance: instance)
+        menu = InstanceMenu(target:target, instance: instance)
+        statusBarItem.menu = self.menu
     }
     
     // remove this item from the system's status menubar
     func removeFromStatusBar(){
         NSStatusBar.system.removeStatusItem(self.statusBarItem)
+    }
+    
+    func updateStatus(){
+        menu.updateStatus()
     }
     
     

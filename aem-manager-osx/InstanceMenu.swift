@@ -13,19 +13,28 @@ import Cocoa
 
 class InstanceMenu : NSMenu {
     
+    let statusMenuItem:NSMenuItem!
+    let instance:AEMInstance!
+    
     required init(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     init(target: ViewController!, instance:AEMInstance!){
-        super.init(title: instance.id)
+        
+        let statusText = InstanceMenu.getStatusText(instance:instance)
+        
+        statusMenuItem = NSMenuItem(title: statusText, action: nil, keyEquivalent: "")
+        statusMenuItem.isEnabled=false
+        
+        self.instance = instance
+        
+        super.init(title: "invisible")
         
         autoenablesItems = false
-        let nameItem = NSMenuItem(title: instance.name, action: nil, keyEquivalent: "")
-        nameItem.isEnabled=false
-        addItem(nameItem)
-        addItem(NSMenuItem.separator())
         
+        addItem(statusMenuItem)
+        addItem(NSMenuItem.separator())
         
         let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: #selector(ViewController.startInstance2(_:)), k: "",instance: instance)
         startInstanceMenuItem.target = target
@@ -69,6 +78,18 @@ class InstanceMenu : NSMenu {
         rLog.target = target
         addItem(rLog)
         
+    }
+    
+    func updateStatus(){
+        statusMenuItem.title = getStatusText()
+    }
+    
+    func getStatusText() -> String {
+        return InstanceMenu.getStatusText(instance: self.instance)
+    }
+    
+    static func getStatusText(instance:AEMInstance!) -> String {
+        return "\(instance.name) (\(instance.status.rawValue))"
     }
 }
 
