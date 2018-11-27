@@ -52,6 +52,7 @@
 		D013D88C1C09CC4100D6954D /* model */ = {
 			isa = PBXGroup;
 			children = (
+				D01734621C28298300312204 /* BundleStatus.swift */,
 				D013D88D1C09CC8700D6954D /* AEMInstance.swift */,
 				D05D61FD1C0CD6420034E8B6 /* RunMode.swift */,
 			);
@@ -89,7 +90,6 @@
 				D013D88C1C09CC4100D6954D /* model */,
 				D05E6F681C08D1E40090EC54 /* AppDelegate.swift */,
 				D05E6F6A1C08D1E40090EC54 /* ViewController.swift */,
-				D01734621C28298300312204 /* BundleStatus.swift */,
 				D01734601C28297500312204 /* AemActions.swift */,
 				D05E6F6C1C08D1E40090EC54 /* Assets.xcassets */,
 				D05E6F6E1C08D1E40090EC54 /* Main.storyboard */,
