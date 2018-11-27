@@ -84,7 +84,7 @@
                             </menuItem>
                             <menuItem title="Instances" id="dMs-cI-mzQ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Instances" id="bib-Uj-vzu">
+                                <menu key="submenu" title="Instances" identifier="Instances" id="bib-Uj-vzu">
                                     <items>
                                         <menuItem title="New" keyEquivalent="n" id="Was-JA-tGl">
                                             <connections>

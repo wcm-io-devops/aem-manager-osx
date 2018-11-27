@@ -11,81 +11,91 @@
 import Foundation
 import Cocoa
 
+
+typealias AEMInstanceSupplier =  ()->(AEMInstance?)
+
 class InstanceMenu : NSMenu {
     
-    let statusMenuItem:NSMenuItem!
-    let instance:AEMInstance!
+    var statusMenuItem:NSMenuItem?
+    let instance:()->(AEMInstance?)
     
     required init(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(target: ViewController!, instance:AEMInstance!){
+    init(target: InstanceMenuDelegate!, instance: @escaping AEMInstanceSupplier , statusBarItem:Bool=false, isContextMenu:Bool=false){
         
-        let statusText = InstanceMenu.getStatusText(instance:instance)
-        
-        statusMenuItem = NSMenuItem(title: statusText, action: nil, keyEquivalent: "")
-        statusMenuItem.isEnabled=false
+        if(statusBarItem) {
+            statusMenuItem = NSMenuItem(title: instance()!.name, action: nil, keyEquivalent: "")
+            statusMenuItem!.isEnabled = false
+        }
         
         self.instance = instance
         
-        super.init(title: "invisible")
+        super.init(title: "Instances")
         
-        autoenablesItems = false
+        if !isContextMenu && !statusBarItem {
+            addItem(NewInstanceMenuItem(t: "New", a: {target.newInstance()}, k: "N",{nil}))
+        }
         
-        addItem(statusMenuItem)
+        if statusBarItem {
+            addItem(statusMenuItem!)
+        }
+        else {
+            addItem(InstanceMenuItem(t: "Delete", a: {target.deleteInstance(instance)}, k: "D",instance))
+        }
+        
+        addItem(InstanceMenuItem(t: "Edit", a: {target.editInstance(instance)}, k: "E",instance))
+        
+        
+        autoenablesItems = true
+        
+        
         addItem(NSMenuItem.separator())
         
-        let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: #selector(ViewController.startInstance2(_:)), k: "",instance: instance)
-        startInstanceMenuItem.target = target
-        addItem(startInstanceMenuItem)
+        let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: {target.startInstance(instance)}, k: "",instance)
         
-        let stopInstanceMenuItem = InstanceMenuItem(t: "Stop Instance", a: #selector(ViewController.stopInstance2(_:)), k: "",instance: instance)
-        stopInstanceMenuItem.target = target
+        addItem(startInstanceMenuItem)
+
+        let stopInstanceMenuItem = InstanceMenuItem(t: "Stop Instance", a: {target.stopInstance(instance)}, k: "",instance)
         addItem(stopInstanceMenuItem)
         
         addItem(NSMenuItem.separator())
         
-        let openAuthorMenuItem = InstanceMenuItem(t: "Open Author/Publish", a: #selector(ViewController.openAuthor2(_:)), k: "",instance: instance)
-        openAuthorMenuItem.target = target
+        let openAuthorMenuItem = InstanceMenuItem(t: "Open Author/Publish", a: {target.openAuthor(instance)}, k: "",instance)
         addItem(openAuthorMenuItem)
         
-        let openCRX = InstanceMenuItem(t: "Open CRX", a: #selector(ViewController.openCRX2(_:)), k: "",instance: instance)
-        openCRX.target = target
+        let openCRX = InstanceMenuItem(t: "Open CRX", a: {target.openCRX(instance)}, k: "",instance)
         addItem(openCRX)
         
-        let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: #selector(ViewController.openCRXDE2(_:)), k: "",instance: instance)
-        openCRXDE.target = target
+        let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: {target.openCRXDE(instance)}, k: "",instance)
         addItem(openCRXDE)
         
-        let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: #selector(ViewController.openFelixConsole2(_:)), k: "",instance: instance)
-        openFelixConsole.target = target
+        let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: {target.openFelixConsole(instance)}, k: "",instance)
         addItem(openFelixConsole)
         
         addItem(NSMenuItem.separator())
         
-        let openInstanceFolder = InstanceMenuItem(t: "Open in \"Finder\"", a: #selector(ViewController.openInstanceFolder2(_:)), k: "",instance: instance)
-        openInstanceFolder.target = target
+        let openInstanceFolder = InstanceMenuItem(t: "Open in \"Finder\"", a: {target.openInstanceFolder(instance)}, k: "",instance)
         addItem(openInstanceFolder)
         
         addItem(NSMenuItem.separator())
         
-        let eLog = InstanceMenuItem(t: "Error Log", a: #selector(ViewController.openErrorLog2(_:)), k: "",instance: instance)
-        eLog.target = target
+        let eLog = InstanceMenuItem(t: "Error Log", a: {target.openErrorLog(instance)}, k: "", instance)
         addItem(eLog)
         
-        let rLog = InstanceMenuItem(t: "Request Log", a: #selector(ViewController.openRequestLog2(_:)), k: "",instance: instance)
-        rLog.target = target
+        let rLog = InstanceMenuItem(t: "Request Log", a: {target.openRequestLog(instance)}, k: "",instance)
         addItem(rLog)
         
+        
     }
-    
+
     func updateStatus(){
-        statusMenuItem.title = getStatusText()
+        statusMenuItem?.title = getStatusText()
     }
     
     func getStatusText() -> String {
-        return InstanceMenu.getStatusText(instance: self.instance)
+        return InstanceMenu.getStatusText(instance: self.instance())
     }
     
     static func getStatusText(instance:AEMInstance!) -> String {
@@ -93,17 +103,61 @@ class InstanceMenu : NSMenu {
     }
 }
 
+protocol InstanceMenuDelegate  {
+    
+    func notifyNoInstanceSelected()
+    func deleteInstance(_ instance: AEMInstanceSupplier)
+    func newInstance()
+    func editInstance(_ instance: AEMInstanceSupplier)
+    
+    
+    
+    func startInstance(_ instance: AEMInstanceSupplier)
+    func stopInstance(_ instance: AEMInstanceSupplier)
+    func openAuthor(_ instance: AEMInstanceSupplier)
+    
+    func openCRX(_ instance: AEMInstanceSupplier)
+    func openCRXDE(_ instance: AEMInstanceSupplier)
+    func openFelixConsole(_ instance: AEMInstanceSupplier)
+    func openInstanceFolder(_ instance: AEMInstanceSupplier)
+    func openRequestLog(_ instance: AEMInstanceSupplier)
+    func openErrorLog(_ instance: AEMInstanceSupplier)
+    
 
-class InstanceMenuItem : NSMenuItem {
-    var ins: AEMInstance
-    init(t: String, a:Selector, k: String,instance:AEMInstance) {
-        ins = instance
-        super.init(title: t, action: a, keyEquivalent: k)
-        
-        
+    
+}
+
+class NewInstanceMenuItem : InstanceMenuItem {
+    
+    override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        return true
+    }
+}
+
+class InstanceMenuItem : NSMenuItem, NSMenuItemValidation {
+    var actionClosure: () -> ()
+    internal let instance : AEMInstanceSupplier
+    
+    init(t: String, a: @escaping ()->(), k: String, _ instance: @escaping AEMInstanceSupplier ) {
+        self.actionClosure = a
+        self.instance = instance;
+        super.init(title: t, action: #selector(InstanceMenuItem.action(sender:)), keyEquivalent: k)
+        self.target = self;
+       
     }
     
     required init(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    @objc func action(sender: InstanceMenuItem) {
+        self.actionClosure()
+    }
+    
+    override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        return instance() != nil
+    }
+    
+   
 }
+

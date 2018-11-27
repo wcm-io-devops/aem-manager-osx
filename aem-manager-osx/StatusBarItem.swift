@@ -24,7 +24,7 @@ class StatusBarItem {
         statusBarItem.target = target
         let icon = InstanceIcons.getIcon(instance: instance)
         statusBarItem.image = icon
-        menu = InstanceMenu(target:target, instance: instance)
+        menu = InstanceMenu(target:target, instance: {instance}, statusBarItem:true)
         statusBarItem.menu = self.menu
     }
     
