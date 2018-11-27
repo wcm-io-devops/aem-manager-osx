@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B15575BB21AD4631006922A4 /* InstanceMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15575BA21AD4631006922A4 /* InstanceMenu.swift */; };
 		B199A3D721AC4811007F5789 /* StatusBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B199A3D621AC4811007F5789 /* StatusBarItem.swift */; };
+		B1F862C421AD497C00F9011D /* InstancesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F862C321AD497C00F9011D /* InstancesTableView.swift */; };
 		D013D88E1C09CC8700D6954D /* AEMInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D013D88D1C09CC8700D6954D /* AEMInstance.swift */; };
 		D013D8911C0A27E700D6954D /* AemInstanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D013D8901C0A27E700D6954D /* AemInstanceController.swift */; };
 		D01734611C28297500312204 /* AemActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01734601C28297500312204 /* AemActions.swift */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		B15575BA21AD4631006922A4 /* InstanceMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstanceMenu.swift; sourceTree = "<group>"; };
 		B199A3D621AC4811007F5789 /* StatusBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarItem.swift; sourceTree = "<group>"; };
+		B1F862C321AD497C00F9011D /* InstancesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstancesTableView.swift; sourceTree = "<group>"; };
 		D013D88D1C09CC8700D6954D /* AEMInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEMInstance.swift; sourceTree = "<group>"; };
 		D013D8901C0A27E700D6954D /* AemInstanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AemInstanceController.swift; sourceTree = "<group>"; };
 		D01734601C28297500312204 /* AemActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AemActions.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				B199A3D621AC4811007F5789 /* StatusBarItem.swift */,
 				B15575BA21AD4631006922A4 /* InstanceMenu.swift */,
 				D05E6F711C08D1E40090EC54 /* Info.plist */,
+				B1F862C321AD497C00F9011D /* InstancesTableView.swift */,
 			);
 			path = "aem-manager-osx";
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 			files = (
 				D05E6F6B1C08D1E40090EC54 /* ViewController.swift in Sources */,
 				D01734611C28297500312204 /* AemActions.swift in Sources */,
+				B1F862C421AD497C00F9011D /* InstancesTableView.swift in Sources */,
 				D05E6F691C08D1E40090EC54 /* AppDelegate.swift in Sources */,
 				D01734631C28298300312204 /* BundleStatus.swift in Sources */,
 				D013D8911C0A27E700D6954D /* AemInstanceController.swift in Sources */,

@@ -455,32 +455,6 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
     
 }
 
-
-
-
-// Unfortunately this is necessary so that the context-menu behaves as expected. I adapted the important pieces from
-// https://forums.macrumors.com/threads/cocoa-nstableview-right-click-action-and-row-detection-cruel-joke.2089066/
-class InstancesTableView : NSTableView {
-    
-    override func menu(for event: NSEvent) -> NSMenu? {
-        
-        if (self.numberOfRows == 0) {
-            return nil
-        }
-        
-        let row = self.row(at: self.convert(event.locationInWindow, from: nil))
-        
-        if (row == -1) {
-            return nil
-        }
-        
-        self.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
-        
-        let controller = delegate as! ViewController
-        return controller.openContextMenu()
-    }
-}
-
 extension String {
     func versionToInt() -> [Int] {
         return self.components(separatedBy: ".")
