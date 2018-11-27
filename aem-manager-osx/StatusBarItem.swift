@@ -22,7 +22,7 @@ class StatusBarItem {
         self.instance = instance;
         statusBarItem = NSStatusBar.system.statusItem(withLength: -1)
         statusBarItem.target = target
-        let icon = NSImage(named: NSImage.Name(rawValue: String(instance.icon.last!)))
+        let icon = InstanceIcons.getIcon(instance: instance)
         statusBarItem.image = icon
         menu = InstanceMenu(target:target, instance: instance)
         statusBarItem.menu = self.menu
@@ -35,6 +35,7 @@ class StatusBarItem {
     
     func updateStatus(){
         menu.updateStatus()
+        statusBarItem.image = InstanceIcons.getIcon(instance: instance)
     }
     
     
