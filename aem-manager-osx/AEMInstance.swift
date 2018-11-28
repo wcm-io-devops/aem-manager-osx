@@ -116,8 +116,18 @@ class AEMInstance: NSObject, NSCoding {
     // MARK: NSCoding
     required convenience init(coder decoder: NSCoder) {
         self.init()
-        self.id = decoder.decodeObject(forKey: "id") as! String
         self.name = decoder.decodeObject(forKey: "name") as! String
+        
+        let decodedId = decoder.decodeObject(forKey: "id") as! String
+        if(decodedId == self.name) {
+            // mceruti: Version 0.1.7 did write the instance's name as it's id
+            // so we now give it a proper new id
+            self.id = UUID().uuidString
+        }
+        else {
+            self.id  = decodedId
+        }
+        
         self.type = decoder.decodeObject(forKey: "type") as! String
         self.path = decoder.decodeObject(forKey: "path") as! String
         
