@@ -10,7 +10,8 @@ import Cocoa
 
 import os.log
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, InstanceMenuDelegate {
+  
     
     // MARK: properties
     @IBOutlet weak var table: NSTableView!
@@ -20,7 +21,7 @@ class ViewController: NSViewController {
     weak var selectedInstance: AEMInstance?
     
     var guiarray:[NSWindowController] = []
-    var items: [NSStatusItem] = []
+    var statusBarItems: [StatusBarItem] = []
     
     var timer = Timer()
     var timer2 = Timer()
@@ -52,6 +53,10 @@ class ViewController: NSViewController {
         }
         
         table.reloadData()
+        
+        statusBarItems.forEach{
+            item in item.updateStatus()
+        }
     }
     
     @IBAction func checkVersionUpdate(_ sender: NSMenuItem){
@@ -98,62 +103,27 @@ class ViewController: NSViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.reloadTableData(_:)), name: NSNotification.Name(rawValue: "reload"), object: nil)
         
+        
+        NSApp.mainMenu?.item(withTitle: "Instances");
+        
+        let mm:NSMenuItem = NSMenuItem(title: "Piff", action: nil, keyEquivalent: "");
+        
+        NSApp.mainMenu?.insertItem(mm, at: 1)
+        NSApp.mainMenu?.setSubmenu(InstanceMenu(target:self,instance:{self.selectedInstance}), for: mm)
+   
+        
+        initStatusBarItems()
+    }
+    
+    func initStatusBarItems(){
+        
+        statusBarItems.forEach {
+            item in item.removeFromStatusBar()
+        }
+        
         for instance in instances{
             if instance.showIcon {
-                let statusBarItem = NSStatusBar.system.statusItem(withLength: -1)
-                statusBarItem.target = self
-                items.append(statusBarItem)
-                let icon = NSImage(named: NSImage.Name(rawValue: String(instance.icon.last!)))
-                statusBarItem.image = icon
-                
-                
-                let menu : NSMenu = NSMenu()
-                menu.autoenablesItems = false
-                
-                let startInstanceMenuItem = InstanceMenuItem(t: "Start Instance", a: #selector(ViewController.startInstance2(_:)), k: "",instance: instance)
-                startInstanceMenuItem.target = self
-                menu.addItem(startInstanceMenuItem)
-                
-                let stopInstanceMenuItem = InstanceMenuItem(t: "Stop Instance", a: #selector(ViewController.stopInstance2(_:)), k: "",instance: instance)
-                stopInstanceMenuItem.target = self
-                menu.addItem(stopInstanceMenuItem)
-                
-                menu.addItem(NSMenuItem.separator())
-                
-                let openAuthorMenuItem = InstanceMenuItem(t: "Open Author/Publish", a: #selector(ViewController.openAuthor2(_:)), k: "",instance: instance)
-                openAuthorMenuItem.target = self
-                menu.addItem(openAuthorMenuItem)
-                
-                let openCRX = InstanceMenuItem(t: "Open CRX", a: #selector(ViewController.openCRX2(_:)), k: "",instance: instance)
-                openCRX.target = self
-                menu.addItem(openCRX)
-                
-                let openCRXDE = InstanceMenuItem(t: "Open CRXDE Lite", a: #selector(ViewController.openCRXDE2(_:)), k: "",instance: instance)
-                openCRXDE.target = self
-                menu.addItem(openCRXDE)
-                
-                let openFelixConsole = InstanceMenuItem(t: "Open Felix Console", a: #selector(ViewController.openFelixConsole2(_:)), k: "",instance: instance)
-                openFelixConsole.target = self
-                menu.addItem(openFelixConsole)
-                
-                menu.addItem(NSMenuItem.separator())
-                
-                let openInstanceFolder = InstanceMenuItem(t: "Open in \"Finder\"", a: #selector(ViewController.openInstanceFolder2(_:)), k: "",instance: instance)
-                openInstanceFolder.target = self
-                menu.addItem(openInstanceFolder)
-                
-                menu.addItem(NSMenuItem.separator())
-                
-                let eLog = InstanceMenuItem(t: "Error Log", a: #selector(ViewController.openErrorLog2(_:)), k: "",instance: instance)
-                eLog.target = self
-                menu.addItem(eLog)
-                
-                let rLog = InstanceMenuItem(t: "Request Log", a: #selector(ViewController.openRequestLog2(_:)), k: "",instance: instance)
-                rLog.target = self
-                menu.addItem(rLog)
-                
-                statusBarItem.menu = menu
-                
+                statusBarItems.append(StatusBarItem(target: self, instance: instance))
             }
         }
         
@@ -167,16 +137,18 @@ class ViewController: NSViewController {
     }
     
     @IBAction func editInstance(_ sender: NSMenuItem) {
+        editInstance({selectedInstance})
+    }
+    
+    func editInstance(_ instance: AEMInstanceSupplier) {
         
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
+        if let instance = instance() {
             
             // open preferences dialog with instance
             if let winCrtl = storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "aemInstanceGUI")) as? NSWindowController {
                 if let aemInstanceGui = winCrtl.contentViewController as? AemInstanceController{
                     // add data
-                    aemInstanceGui.aeminstance = selectedInstance
+                    aemInstanceGui.aeminstance = instance
                     aemInstanceGui.instances = instances
                     os_log("Edit Instance with name : %@ and id: %@",type:.info,aemInstanceGui.aeminstance!.name, aemInstanceGui.aeminstance!.id)
                 }
@@ -184,10 +156,26 @@ class ViewController: NSViewController {
                 guiarray.append(winCrtl)
             }
         }
+        else {
+            notifyNoInstanceSelected()
+        }
         
     }
     
-    @IBAction func newInstance(_ sender: NSMenuItem) {
+    @IBAction func doubleClickInstance(_ sender: NSObject) {
+        if table.selectedRow >= 0 {
+            editInstance({selectedInstance})
+        }
+    }
+    
+    func openContextMenu() -> NSMenu? {
+        if(selectedInstance != nil) {
+            return InstanceMenu(target: self, instance: { self.selectedInstance! })
+        }
+        return nil
+    }
+    
+    func newInstance() {
         
         // open new preferences dialog
         if let winCrtl = storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "aemInstanceGUI")) as? NSWindowController {
@@ -205,14 +193,12 @@ class ViewController: NSViewController {
         
     }
     
-    @IBAction func deleteInstance(_ sender: NSMenuItem) {
+    func deleteInstance(_ instance: AEMInstanceSupplier) {
         
+        if let instance = instance() {
         
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            if instances.contains(selectedInstance!){
-                instances.remove(at: instances.index(of: selectedInstance!)!)
+            if instances.contains(instance){
+                instances.remove(at: instances.index(of: instance)!)
                 
                 AEMInstance.save(instances)
                 
@@ -220,79 +206,64 @@ class ViewController: NSViewController {
                 
             }
         }
+        else {
+            notifyNoInstanceSelected()
+        }
         
     }
     
-    @IBAction func startInstance(_ sender: NSMenuItem) {
+    func notifyNoInstanceSelected(){
+        performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
+    }
+    
+    func startInstance(_ instance: AEMInstanceSupplier) {
         
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            
+        if let instance = instance() {
             backgroundThread(background: {
-                AemActions.startInstance(self.selectedInstance!)
-                
+                AemActions.startInstance(instance)
             },completion: {
                 
             })
+        } else {
+            notifyNoInstanceSelected()
         }
-        
+ 
     }
     
     
-    @objc func startInstance2(_ sender: InstanceMenuItem) -> Void {
-        
-        backgroundThread(background: {
-            AemActions.startInstance(sender.ins)
-        },completion: {
-            
-        })
-    }
-    
-    
-    @IBAction func stopInstance(_ sender: NSMenuItem) {
-        
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            AemActions.stopInstance(selectedInstance!)
+    func stopInstance(_ instance: AEMInstanceSupplier) {
+        if let instance = instance() {
+            AemActions.stopInstance(instance)
+        }
+        else {
+            notifyNoInstanceSelected()
         }
     }
+
     
-    @objc func stopInstance2(_ sender: InstanceMenuItem) {
-        AemActions.stopInstance(sender.ins)
-    }
-    
-    @IBAction func openAuthor(_ sender: NSMenuItem) {
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            if let url = URL(string: AEMInstance.getUrlWithContextPath(selectedInstance!)){
+    func openAuthor(_ instance: AEMInstanceSupplier) {
+        if let instance = instance() {
+            if let url = URL(string: AEMInstance.getUrlWithContextPath(instance)){
                 NSWorkspace.shared.open(url)
             }
         }
+        else {
+            notifyNoInstanceSelected()
+        }
     }
+
     
-    @objc func openAuthor2(_ sender: InstanceMenuItem) {
-        if let url = URL(string: AEMInstance.getUrlWithContextPath(sender.ins)){
-            NSWorkspace.shared.open(url)
+    func openCRX(_ instance: AEMInstanceSupplier) {
+        
+        if let instance = instance() {
+            openFuncCRX(instance)
+        }
+         else {
+            notifyNoInstanceSelected()
         }
         
     }
-    
-    @IBAction func openCRX(_ sender: NSMenuItem) {
-        
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            openFuncCRX(selectedInstance!)
-            
-        }
-    }
-    
-    @objc func openCRX2(_ sender: InstanceMenuItem) {
-        openFuncCRX(sender.ins)
-    }
+
     
     func openFuncCRX(_ instace: AEMInstance){
         var url = AEMInstance.getUrlWithContextPath(selectedInstance!)
@@ -315,24 +286,22 @@ class ViewController: NSViewController {
     }
     
     
-    @IBAction func openCRXDE(_ sender: NSMenuItem) {
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            openCRXDEFunc(selectedInstance!)
+    func openCRXDE(_ instance: AEMInstanceSupplier) {
+        if let instance = instance() {
+            openCRXDEFunc(instance)
+        }
+        else {
+            notifyNoInstanceSelected()
         }
     }
     
-    @IBAction func openInstanceFolder(_ sender: NSMenuItem) {
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            openInstanceFolderFunc(selectedInstance!)
+    func openInstanceFolder(_ instance: AEMInstanceSupplier) {
+        if let instance = instance() {
+            openInstanceFolderFunc(instance)
         }
-    }
-    
-    @objc func openInstanceFolder2(_ sender: InstanceMenuItem) {
-        openInstanceFolderFunc(sender.ins)
+        else {
+            notifyNoInstanceSelected()
+        }
     }
     
     func openInstanceFolderFunc(_ instance: AEMInstance){
@@ -359,15 +328,13 @@ class ViewController: NSViewController {
         }
     }
     
-    @objc func openCRXDE2(_ sender: InstanceMenuItem) {
-        openCRXDEFunc(sender.ins)
-    }
     
-    @IBAction func openFelixConsole(_ sender: NSMenuItem) {
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            openFelixConsoleFunc(selectedInstance!)
+    func openFelixConsole(_ instance: AEMInstanceSupplier) {
+        if let instance = instance() {
+            openFelixConsoleFunc(instance)
+        }
+        else {
+            notifyNoInstanceSelected()
         }
     }
     
@@ -379,24 +346,15 @@ class ViewController: NSViewController {
         }
     }
     
-    @objc func openFelixConsole2(_ sender: InstanceMenuItem) {
-        openFelixConsoleFunc(sender.ins)
-    }
+ 
     
-    @IBAction func openErrorLog(_ sender: NSMenuItem) {
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            openErrorLogFunc(selectedInstance!)
+    func openErrorLog(_ instance: AEMInstanceSupplier) {
+        if let instance = instance() {
+            openErrorLogFunc(instance)
         }
-    }
-    
-    @objc func openErrorLog2(_ sender: InstanceMenuItem) {
-        NSApp.activate(ignoringOtherApps: true)
-        
-        self.view.window?.makeKeyAndOrderFront(self)
-        self.view.window!.orderFront(self)
-        openErrorLogFunc(sender.ins)
+        else {
+            notifyNoInstanceSelected()
+        }
     }
     
     func openErrorLogFunc(_ instance: AEMInstance){
@@ -413,17 +371,15 @@ class ViewController: NSViewController {
         }
     }
     
-    @IBAction func openRequestLog(_ sender: NSMenuItem) {
-        if table.selectedRow < 0 {
-            performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "noInstance"),sender: self)
-        }else{
-            openRequestLogFunc(selectedInstance!)
+    func openRequestLog(_ instance: AEMInstanceSupplier) {
+        if let instance = instance() {
+            openRequestLogFunc(instance)
+        }
+        else {
+            notifyNoInstanceSelected()
         }
     }
     
-    @objc func openRequestLog2(_ sender: InstanceMenuItem) {
-        openRequestLogFunc(sender.ins)
-    }
     
     func openRequestLogFunc(_ instance: AEMInstance){
         openLogFile(instance, log: "request.log")
@@ -432,9 +388,18 @@ class ViewController: NSViewController {
     @objc func reloadTableData(_ notification: Notification){
         instances = AEMInstance.loadAEMInstances()
         table.reloadData()
+        initStatusBarItems()
     }
     
+    
+//    func validateMenuItem(_ menuItem: InstanceMenuItem) -> Bool {
+//        return selectedInstance != nil
+//    }
+  
 }
+
+
+
 
 
 extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
@@ -446,19 +411,13 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         if let coid = tableColumn?.identifier {
-            switch coid._rawValue {
+            switch coid.rawValue {
             case "name": return instances[row].name
             case "path": return instances[row].path
             case "type": return instances[row].type
             case "status":
                 let status = instances[row].status
-                switch status {
-                case .running: return "Running"
-                case .starting_Stopping: return "Starting/Stopping"
-                case .unknown: return "Unknown"
-                case .notActive: return "Not active"
-                case .disabled: return "Disabled"
-                }
+                return status.rawValue;
                 
             case "url": return AEMInstance.getUrl(instances[row])
             default: break
@@ -467,29 +426,18 @@ extension ViewController: NSTableViewDataSource , NSTableViewDelegate {
         }
         return nil
     }
+    
     func tableViewSelectionDidChange(_ notification: Notification) {
         if table.selectedRow >= 0 {
             os_log("Selected instance in table with name : %@ and id: %@",type:.info,instances[table.selectedRow].name, instances[table.selectedRow].id)
             // set seletected instance
             selectedInstance = instances[table.selectedRow]
-            
+        }
+        else {
+            selectedInstance = nil
         }
     }
-}
 
-class InstanceMenuItem : NSMenuItem {
-    var ins: AEMInstance
-    init(t: String, a:Selector, k: String,instance:AEMInstance) {
-        ins = instance
-        super.init(title: t, action: a, keyEquivalent: k)
-        
-        
-    }
-    
-    required init(coder decoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     
 }
 

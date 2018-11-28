@@ -8,6 +8,8 @@
 
 import Cocoa
 
+typealias AEMInstanceSupplier =  ()->(AEMInstance?)
+
 class AEMInstance: NSObject, NSCoding {
     
     
@@ -19,7 +21,7 @@ class AEMInstance: NSObject, NSCoding {
     static let defaultJConsolePort = 9999
     static let defaultType = "AEM 5.5, 6.0 or higher"
     
-    let id = UUID().uuidString
+    var id = UUID().uuidString
     var name: String = ""
     var path: String = ""
     
@@ -114,8 +116,18 @@ class AEMInstance: NSObject, NSCoding {
     // MARK: NSCoding
     required convenience init(coder decoder: NSCoder) {
         self.init()
-        self.name = decoder.decodeObject(forKey: "id") as! String
         self.name = decoder.decodeObject(forKey: "name") as! String
+        
+        let decodedId = decoder.decodeObject(forKey: "id") as! String
+        if(decodedId == self.name) {
+            // mceruti: Version 0.1.7 did write the instance's name as it's id
+            // so we now give it a proper new id
+            self.id = UUID().uuidString
+        }
+        else {
+            self.id  = decodedId
+        }
+        
         self.type = decoder.decodeObject(forKey: "type") as! String
         self.path = decoder.decodeObject(forKey: "path") as! String
         
@@ -151,7 +163,7 @@ class AEMInstance: NSObject, NSCoding {
     }
     
     func encode(with coder: NSCoder) {
-        coder.encode(self.name, forKey: "id")
+        coder.encode(self.id, forKey: "id")
         coder.encode(self.name, forKey: "name")
         coder.encode(self.type, forKey: "type")
         coder.encode(self.path, forKey: "path")
