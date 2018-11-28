@@ -16,7 +16,7 @@ class StatusBarItem {
     
     internal let statusBarItem:NSStatusItem!
     internal let instance: AEMInstance!
-    internal let menu: InstanceMenu!
+    internal let menu: StatusBarInstanceMenu!
     
     init(target: ViewController!, instance:AEMInstance!){
         self.instance = instance;
@@ -24,7 +24,7 @@ class StatusBarItem {
         statusBarItem.target = target
         let icon = InstanceIcons.getIcon(instance: instance)
         statusBarItem.image = icon
-        menu = InstanceMenu(target:target, instance: {instance}, statusBarItem:true)
+        menu = StatusBarInstanceMenu(target:target, instance: {instance})
         statusBarItem.menu = self.menu
     }
     

@@ -8,6 +8,8 @@
 
 import Cocoa
 
+typealias AEMInstanceSupplier =  ()->(AEMInstance?)
+
 class AEMInstance: NSObject, NSCoding {
     
     

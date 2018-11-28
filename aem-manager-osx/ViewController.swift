@@ -170,8 +170,7 @@ class ViewController: NSViewController, InstanceMenuDelegate {
     
     func openContextMenu() -> NSMenu? {
         if(selectedInstance != nil) {
-            return InstanceMenu(target: self, instance: { self.selectedInstance! },
-                                statusBarItem:false, isContextMenu:true)
+            return InstanceMenu(target: self, instance: { self.selectedInstance! })
         }
         return nil
     }
